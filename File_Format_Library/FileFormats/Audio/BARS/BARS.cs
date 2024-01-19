@@ -173,6 +173,9 @@ namespace FirstPlugin
                        // ShowHexView();
                         ShowBfwavPlayer();
                         break;
+                    //case "BWAV":
+                    //    ShowBwavPlayer();
+                    //    break;
                     default:
                         ShowHexView();
                         break;
@@ -193,6 +196,22 @@ namespace FirstPlugin
                 editor.Text = Text;
                 editor.Dock = DockStyle.Fill;
                 editor.LoadFile(audioFile.audioData, new BFWAV(), true);
+            }
+
+            private void ShowBwavPlayer()
+            {
+                var audioFile = new VGAdudioFile();
+                audioFile.LoadAudio(new MemoryStream(Data), new BWAV());
+
+                AudioPlayerPanel editor = (AudioPlayerPanel)LibraryGUI.GetActiveContent(typeof(AudioPlayerPanel));
+                if (editor == null)
+                {
+                    editor = new AudioPlayerPanel();
+                    LibraryGUI.LoadEditor(editor);
+                }
+                editor.Text = Text;
+                editor.Dock = DockStyle.Fill;
+                editor.LoadFile(audioFile.audioData, new BWAV(), true);
             }
 
             private void ShowHexView()

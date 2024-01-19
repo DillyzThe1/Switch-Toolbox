@@ -210,6 +210,7 @@
     <Compile Include="Animations\MaterialAnimation.cs" />
     <Compile Include="Animations\SceneAnimation.cs" />
     <Compile Include="Audio\AudioFileRipper.cs" />
+    <Compile Include="Audio\BWavReader.cs" />
     <Compile Include="Audio\VGAudioFile.cs" />
     <Compile Include="Collections\SortExtensions.cs" />
     <Compile Include="Compression\7ZIP\Common\CommandLineParser.cs" />

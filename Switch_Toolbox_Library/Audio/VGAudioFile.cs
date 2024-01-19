@@ -30,6 +30,7 @@ namespace Toolbox.Library
         HpsStructure hpsStructure;
         IdspStructure idspStructure;
         WaveStructure waveStructure;
+        BWavStructure bStructure;
 
         public IFileFormat Format;
 
@@ -59,6 +60,12 @@ namespace Toolbox.Library
                         bxstmStructure = brstmReader.ReadMetadata(stream);
                         stream.Position = 0;
                         audioWithConfig = brstmReader.ReadWithConfig(stream);
+                        break;
+                    case ".bwav":
+                        var bReader = new BWavReader();
+                        bStructure = bReader.ReadMetadata(stream);
+                        stream.Position = 0;
+                        audioWithConfig = bReader.ReadWithConfig(stream);
                         break;
                     case ".idsp":
                         var idspReader = new IdspReader();

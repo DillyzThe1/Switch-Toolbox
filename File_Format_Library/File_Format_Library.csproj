@@ -244,6 +244,7 @@
     <Compile Include="FileFormats\Audio\BARS\BarsZsFile.cs" />
     <Compile Include="FileFormats\Audio\BARS\BARS_ZS.cs" />
     <Compile Include="FileFormats\Audio\BARS\FileReaderBarsZS.cs" />
+    <Compile Include="FileFormats\Audio\BWAV.cs" />
     <Compile Include="FileFormats\BCH\BCH.cs" />
     <Compile Include="FileFormats\BCH\MBN.cs" />
     <Compile Include="FileFormats\BCH\Wrappers\BCHGroupNode.cs" />

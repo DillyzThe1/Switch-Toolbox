@@ -36,6 +36,9 @@ If you'd like to support the [original creator](https://github.com/KillzXGaming/
 Opening & dumping *.barz.sz files!
 - Saving is planned soon, but first I must figure out the headers.
 
+~~Viewing .BWAV files~~
+- Delayed because I DON'T FEEL LIKE WORKING ALL OF THAT OUT :cryingspongebob:
+
 ## Original Features
 
 This tool currently features:
