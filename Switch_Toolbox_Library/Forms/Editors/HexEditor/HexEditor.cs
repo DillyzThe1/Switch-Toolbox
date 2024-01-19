@@ -109,11 +109,20 @@ namespace Toolbox.Library.Forms
         }
 
         // https://stackoverflow.com/questions/9820165/convert-hexadecimal-string-to-its-numerical-values-in-c-sharp
+        // TODO: Add a popup asking how long the trimmed file should be.
         private void trimFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            int trimLength = Convert.ToInt32("00002070", 16) + 0x10;
-            byte[] oldFunnies = funnyData;
+            if (MessageBox.Show("This will trim the file to 0x00002070.\nContinue?", "New Switch Toolbox", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                return;
 
+            int trimLength = Convert.ToInt32("00002070", 16) + 0x10;
+
+            if (trimLength >= funnyData.Length) {
+                MessageBox.Show("Failed to trim file: Input is " + (trimLength == funnyData.Length ? "already 0x00002070" : "too short") + "!", "New Switch Toolbox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            byte[] oldFunnies = funnyData;
             funnyData = new byte[trimLength];
             Array.Copy(oldFunnies, funnyData, trimLength);
 
