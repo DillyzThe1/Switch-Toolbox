@@ -77,7 +77,7 @@
             this.numericUpDownInt1.Size = new System.Drawing.Size(314, 20);
             this.numericUpDownInt1.TabIndex = 7;
             this.numericUpDownInt1.Value = new decimal(new int[] {
-            2070,
+            8304,
             0,
             0,
             0});
