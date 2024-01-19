@@ -341,6 +341,10 @@ namespace FirstPlugin
         private Type[] LoadFileFormats()
         {
             List<Type> Formats = new List<Type>();
+            // NEW TOOLBOX
+            Formats.Add(typeof(BARS_ZS));
+
+            // OLD TOOLBOX
             Formats.Add(typeof(BFRES));
             Formats.Add(typeof(MT_TEX));
             Formats.Add(typeof(MT_Model));
