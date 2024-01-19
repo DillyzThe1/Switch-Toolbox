@@ -3,20 +3,37 @@ A tool to edit many formats of Nintendo Switch, 3DS and Wii U.
 
 ## Notice
 
-**This tool is now archived and no longer in development!**
+**This is a fork of the original [Switch Toolbox](https://github.com/KillzXGaming/Switch-Toolbox/releases).**
+
+The program felt a little under-worked with newer titles, which I find that unfortunate due to my advancing needs.<br>
+So what was the solution on January 1st, 2024 when I discovered that the original Switch Toolbox was discontinued?<br>
+I decided to take matters into my own hands.
+
+Even if I may not be the best tool developer or have the best Switch/Wii U/3DS understandings, I can 100% help myself and my friends to the convienence of whatever I please.
+
+Please support and respect the original creator's decisions alongside my own.<br>
+[![KillzXGaming](https://avatars.githubusercontent.com/u/13475262?v=4)](https://github.com/KillzXGaming) <-- really cool guy who made the original
+
+Thank you for this wonderful tool, KillzXGaming.
 
 # Download
-https://github.com/KillzXGaming/Switch-Toolbox/releases
+https://github.com/DillyzThe1/Switch-Toolbox/releases
 
-Keep in mind this tool is still very experimental. If something breaks from a commit, you can download manually from [here](https://ci.appveyor.com/project/KillzXGaming/switch-toolbox/history). Just select a commit, go to artifacts tab and download the zip. Also be sure to report anything that breaks to [issues here](https://github.com/KillzXGaming/Switch-Toolbox/issues) on github. 
+~~Keep in mind this tool is still very experimental. If something breaks from a commit, you can download manually from [here](https://ci.appveyor.com/project/KillzXGaming/switch-toolbox/history). Just select a commit, go to artifacts tab and download the zip. Also be sure to report anything that breaks to [issues here](https://github.com/KillzXGaming/Switch-Toolbox/issues) on github.~~
+
+NOTE: The message above does not apply to this fork. Please use the Github releases.
 
 ## Discord
-https://discord.gg/eyvGXWP
+DillyzThe1 (New Switch Toolbox Fork): https://discord.gg/49NFTwcYgZ<br>
+KillzXGaming (Original Switch Toolbox Creator): https://discord.gg/eyvGXWP
 
 ## Support 
-If you'd like to support me, you can [donate!](https://www.paypal.com/donate?business=TCG7P6PH6V3PU&currency_code=USD)
+If you'd like to support me or get help on the new version's features, you can join the [Modding Discord!](https://discord.gg/49NFTwcYgZ)<br>
+If you'd like to support the [original creator](https://github.com/KillzXGaming/), you can [donate!](https://www.paypal.com/donate?business=TCG7P6PH6V3PU&currency_code=USD)
 
-## Features
+# New Features
+
+## Original Features
 
 This tool currently features:
 - BFRES
@@ -103,10 +120,11 @@ Can preview:
 
 
 ## Tutorials
-https://github.com/KillzXGaming/Switch-Toolbox/wiki
+[New Switch Toolbox](https://github.com/DillyzThe1/Switch-Toolbox/wiki)<br>
+[Original Switch Toolbox](https://github.com/KillzXGaming/Switch-Toolbox/wiki)
    
 ## Issues or Requests
-https://github.com/KillzXGaming/Switch-Toolbox/issues
+https://github.com/DillyzThe1/Switch-Toolbox/issues
    
 ## Building
 To build make sure you have Visual Studio installed (I use 2017, older versions may not work) and open the solution (.sln), then build the solution as release. It should compile properly on the latest.
@@ -116,6 +134,9 @@ In the event that the tool cannot compile, check references. All the libraries u
 Also, while compiling, Visual Studio might throw errors about files coming from external sources (ie. the web) and will therefore fail to read and compile them. In this event, go into the project root folder and run: `Get-ChildItem -Path "C:\\Full\\Path\\To\\Folder" -Recurse | Unblock-File`.
 
 ## Credits
+- KillzXGaming (Original Switch Toolbox)
+- DillyzThe1 (New Switch Toolbox fork)
+
 
 - Smash Forge Devs (SMG, Ploaj,  jam1garner, smb123w64gb, etc.) for some code ported over, specifically animation stuff, ETC1 encoder and some rendering.
 - Ploaj for a base on the DAE writer.
@@ -176,4 +197,4 @@ Also, while compiling, Visual Studio might throw errors about files coming from 
 License
  in Switch_Toolbox\Lib\Licenses
  
- Please note if you do not want your library used or if i'm missing credits! 
+ Please note if you do not want your library used or if I'm missing credits! 

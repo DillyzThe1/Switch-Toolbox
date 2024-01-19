@@ -85,7 +85,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label1);
             this.Name = "ApplicationCloseDialog";
-            this.Text = "Toolbox";
+            this.Text = "New Switch Toolbox";
             this.ResumeLayout(false);
             this.PerformLayout();
 

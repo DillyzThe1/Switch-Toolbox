@@ -1345,19 +1345,19 @@ namespace Toolbox
 
         private void githubToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            System.Diagnostics.Process.Start("https://github.com/KillzXGaming/Switch-Toolbox");
+            System.Diagnostics.Process.Start("https://github.com/DillyzThe1/Switch-Toolbox");
         }
 
         private void reportBugToolStripMenuItem_Click(object sender, EventArgs e) {
-            System.Diagnostics.Process.Start("https://github.com/KillzXGaming/Switch-Toolbox/issues");
+            System.Diagnostics.Process.Start("https://github.com/DillyzThe1/Switch-Toolbox/issues");
         }
 
         private void requestFeatureToolStripMenuItem1_Click(object sender, EventArgs e) {
-            System.Diagnostics.Process.Start("https://github.com/KillzXGaming/Switch-Toolbox/issues");
+            System.Diagnostics.Process.Start("https://github.com/DillyzThe1/Switch-Toolbox/issues");
         }
 
         private void tutorialToolStripMenuItem_Click(object sender, EventArgs e) {
-            System.Diagnostics.Process.Start("https://github.com/KillzXGaming/Switch-Toolbox/wiki");
+            System.Diagnostics.Process.Start("https://github.com/DillyzThe1/Switch-Toolbox?tab=readme-ov-file#tutorials");
         }
 
         private void checkShaderErrorsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1768,6 +1768,41 @@ namespace Toolbox
                 Directory.CreateDirectory(userDir);
 
             Process.Start("explorer.exe", userDir);
+        }
+
+        private void donateToOriginalToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenDonation();
+        }
+
+        private void repositoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://github.com/KillzXGaming/Switch-Toolbox");
+        }
+
+        private void repositoryToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://github.com/DillyzThe1/Switch-Toolbox");
+        }
+
+        private void wikiPageToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://github.com/KillzXGaming/Switch-Toolbox/wiki");
+        }
+
+        private void killzXGamingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://discord.gg/eyvGXWP");
+        }
+
+        private void dillyzThe1sDiscordToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://discord.gg/49NFTwcYgZ");
+        }
+
+        private void wikiPageToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://github.com/DillyzThe1/Switch-Toolbox/wiki");
         }
     }
 }
