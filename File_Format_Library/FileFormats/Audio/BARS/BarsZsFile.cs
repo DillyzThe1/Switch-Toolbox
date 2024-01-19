@@ -155,20 +155,20 @@ namespace FirstPlugin
 
                 Console.WriteLine(fi_fileName + ".bwav discovered. length " + fi_dataSize + ".");
 
-                //if (loader.Position + fi_dataSize > loader.Length)
+                if (loader.Position + fi_dataSize > loader.Length)
                     Console.WriteLine("ummmmmm " + (loader.Position + fi_dataSize) + " over " + loader.Length + " real 3am?!?!?!?!");
 
                 AudioEntry_ZS entry = new AudioEntry_ZS();
                 entry.name = fi_fileName;
 
-                loader.Position = pos_2;
+                loader.Position = pos_2 - 0x20;
                 BARSAudioFileZS spittingBars = new BARSAudioFileZS();
                 spittingBars.Load(loader);
                 spittingBars.AudioFileSize = fi_dataSize;
 
                 if (spittingBars != null) {
                     entry.AudioFile = spittingBars;
-                    entry.AudioFile.SetData(loader, fi_dataSize);
+                    entry.AudioFile.SetData(loader, entry.AudioFile.AudioFileSize + 0x20);
                 }
 
                 AudioEntries_ZS.Add(entry);
