@@ -14,6 +14,9 @@ using VGAudio.Containers.NintendoWare;
 using VGAudio.Containers.Wave;
 using NAudio.Wave;
 using static FirstPlugin.BARS;
+using DKCTF;
+using static FirstPlugin.RenderInfoEnums;
+using System.Security.Cryptography;
 
 namespace FirstPlugin
 {
@@ -92,7 +95,6 @@ namespace FirstPlugin
             barsZs = new BarsZsFile(stream);
 
 
-
             Console.WriteLine("helloo hi hi hiiii!!!!");
             if (barsZs.HasMetaData)
                 Nodes.Add("Meta Data");
@@ -101,6 +103,10 @@ namespace FirstPlugin
 
             if (barsZs.HasAudioFiles)
                 Nodes.Add(folder);
+
+            TreeNode debugNode = null;
+            if (barsZs.HasDebugData)
+                debugNode = Nodes.Add("Debug Data");
 
             Console.WriteLine("read " + barsZs.AudioEntries_ZS.Count + " bars lol");
             for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
@@ -121,6 +127,14 @@ namespace FirstPlugin
                 }
                 else
                     Console.WriteLine("bar " + i + " had null audio?!");
+
+                if (barsZs.HasDebugData && barsZs.AudioEntries_ZS[i].debugData != null) {
+                    string awesomeName = "debug_" + i + ".bin";
+                    if (barsZs.AudioEntries_ZS[i].AudioFile != null)
+                        awesomeName = barsZs.AudioEntries_ZS[i].name + ".bin";
+                    BinEntry bin = new BinEntry(awesomeName, barsZs.AudioEntries_ZS[i].debugData);
+                    debugNode.Nodes.Add(bin);
+                }
             }
         }
 
@@ -136,6 +150,69 @@ namespace FirstPlugin
 
         public void Unload()
         {
+        }
+
+        public class BinEntry : TreeNodeCustom, IContextMenuNode
+        {
+            public byte[] Data;
+            public ToolStripItem[] GetContextMenuItems()
+            {
+                List<ToolStripItem> Items = new List<ToolStripItem>();
+                Items.Add(new ToolStripMenuItem("Export", null, delegate (object sender, EventArgs args)
+                {
+                    SaveFileDialog sfd = new SaveFileDialog();
+                    sfd.FileName = Text;
+                    sfd.DefaultExt = Path.GetExtension(Text);
+                    sfd.Filter = "All files(*.*)|*.*";
+
+                    if (sfd.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllBytes(sfd.FileName, Data);
+                    }
+                }, Keys.Control | Keys.E));
+                Items.Add(new ToolStripMenuItem("Replace", null, delegate(object sender, EventArgs args)
+                {
+                    OpenFileDialog ofd = new OpenFileDialog();
+                    ofd.FileName = Text;
+                    ofd.DefaultExt = Path.GetExtension(Text);
+                    ofd.Filter = "All files(*.*)|*.*";
+
+                    if (ofd.ShowDialog() == DialogResult.OK)
+                    {
+                        Data = File.ReadAllBytes(ofd.FileName);
+                        ShowHexView();
+                    }
+                }, Keys.Control | Keys.R));
+                return Items.ToArray();
+            }
+
+            public BinEntry(string name, byte[] data) {
+                ImageKey = "fileBlank";
+                SelectedImageKey = "fileBlank";
+                this.Text = name;
+                this.Data = data;
+            }
+
+            private void ShowHexView()
+            {
+                HexEditor editor = (HexEditor)LibraryGUI.GetActiveContent(typeof(HexEditor));
+                if (editor == null)
+                {
+                    editor = new HexEditor();
+                    LibraryGUI.LoadEditor(editor);
+                }
+                editor.Text = Text;
+                editor.Dock = DockStyle.Fill;
+                editor.LoadData(Data);
+                editor.onChanged = delegate (byte[] data) {
+                    Data = data;
+                };
+            }
+
+            public override void OnClick(TreeView treeview)
+            {
+                ShowHexView();
+            }
         }
     }
 }

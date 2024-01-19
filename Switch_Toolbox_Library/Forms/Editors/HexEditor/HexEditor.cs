@@ -110,7 +110,6 @@ namespace Toolbox.Library.Forms
         }
 
         // https://stackoverflow.com/questions/9820165/convert-hexadecimal-string-to-its-numerical-values-in-c-sharp
-        // TODO: Add a popup asking how long the trimmed file should be.
         private void trimFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             HexTrimmingDialog htd = new HexTrimmingDialog();
