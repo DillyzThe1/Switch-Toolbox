@@ -225,6 +225,9 @@ namespace FirstPlugin
                 editor.Text = Text;
                 editor.Dock = DockStyle.Fill;
                 editor.LoadData(Data);
+                editor.onChanged = delegate(byte[] data) {
+                    Data = data;
+                };
             }
 
             public override void OnClick(TreeView treeview)

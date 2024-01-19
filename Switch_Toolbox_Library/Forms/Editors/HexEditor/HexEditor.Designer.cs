@@ -34,6 +34,7 @@
             this.fixedBytesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.findToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.trimFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stContextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -55,6 +56,7 @@
             // 
             // stContextMenuStrip1
             // 
+            this.stContextMenuStrip1.HighlightSelectedTab = false;
             this.stContextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripMenuItem,
             this.editToolStripMenuItem});
@@ -83,7 +85,8 @@
             // editToolStripMenuItem
             // 
             this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.findToolStripMenuItem});
+            this.findToolStripMenuItem,
+            this.trimFileToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
             this.editToolStripMenuItem.Text = "Edit";
@@ -91,9 +94,16 @@
             // findToolStripMenuItem
             // 
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(97, 22);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.findToolStripMenuItem.Text = "Find";
             this.findToolStripMenuItem.Click += new System.EventHandler(this.findToolStripMenuItem_Click);
+            // 
+            // trimFileToolStripMenuItem
+            // 
+            this.trimFileToolStripMenuItem.Name = "trimFileToolStripMenuItem";
+            this.trimFileToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.trimFileToolStripMenuItem.Text = "Trim File";
+            this.trimFileToolStripMenuItem.Click += new System.EventHandler(this.trimFileToolStripMenuItem_Click);
             // 
             // HexEditor
             // 
@@ -118,5 +128,6 @@
         private System.Windows.Forms.ToolStripMenuItem findToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fixedBytesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem trimFileToolStripMenuItem;
     }
 }

@@ -14,6 +14,8 @@ namespace Toolbox.Library.Forms
     public partial class HexEditor : STUserControl
     {
         FindOptions _findOptions = new FindOptions();
+        public Action<byte[]> onChanged;
+        private byte[] funnyData = { };
 
         public HexEditor()
         {
@@ -36,6 +38,7 @@ namespace Toolbox.Library.Forms
         {
             if (hexBox1.ByteProvider != null && !isStream)
             {
+                funnyData = new byte[0]; 
                 hexBox1.ByteProvider.DeleteBytes(0, hexBox1.ByteProvider.Length);
 
                 IDisposable byteProvider = hexBox1.ByteProvider as IDisposable;
@@ -76,6 +79,7 @@ namespace Toolbox.Library.Forms
 
             Cleanup();
 
+            funnyData = data;
             IByteProvider provider = new DynamicByteProvider(data);
             hexBox1.ByteProvider = provider;
         }
@@ -101,6 +105,23 @@ namespace Toolbox.Library.Forms
 
         private void fixedBytesToolStripMenuItem_Click(object sender, EventArgs e) {
             hexBox1.UseFixedBytesPerLine = fixedBytesToolStripMenuItem.Checked;
+            hexBox1.Refresh();
+        }
+
+        // https://stackoverflow.com/questions/9820165/convert-hexadecimal-string-to-its-numerical-values-in-c-sharp
+        private void trimFileToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            int trimLength = Convert.ToInt32("00002070", 16) + 0x10;
+            byte[] oldFunnies = funnyData;
+
+            funnyData = new byte[trimLength];
+            Array.Copy(oldFunnies, funnyData, trimLength);
+
+            if (onChanged != null)
+                onChanged.Invoke(funnyData);
+
+            hexBox1.ByteProvider.DeleteBytes(0, hexBox1.ByteProvider.Length);
+            hexBox1.ByteProvider.InsertBytes(0, funnyData);
             hexBox1.Refresh();
         }
     }
