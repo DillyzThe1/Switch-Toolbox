@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Be.Windows.Forms;
+using Toolbox.Library.Forms.Dialogs;
 
 namespace Toolbox.Library.Forms
 {
@@ -112,13 +113,19 @@ namespace Toolbox.Library.Forms
         // TODO: Add a popup asking how long the trimmed file should be.
         private void trimFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("This will trim the file to 0x00002070.\nContinue?", "New Switch Toolbox", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+            HexTrimmingDialog htd = new HexTrimmingDialog();
+            if (htd.ShowDialog(this) == DialogResult.Cancel)
                 return;
 
-            int trimLength = Convert.ToInt32("00002070", 16) + 0x10;
+            int _trimLength = (int)htd.getValue();
+
+            if (MessageBox.Show("This will trim the file to 0x" + _trimLength.ToString("X2") + ".\nContinue?", "New Switch Toolbox", MessageBoxButtons.OKCancel) == DialogResult.Cancel)
+                return;
+
+            int trimLength = _trimLength + 0x10;
 
             if (trimLength >= funnyData.Length) {
-                MessageBox.Show("Failed to trim file: Input is " + (trimLength == funnyData.Length ? "already 0x00002070" : "too short") + "!", "New Switch Toolbox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                MessageBox.Show("Failed to trim file: Input is " + (trimLength == funnyData.Length ? "already 0x" + _trimLength.ToString("X2") : "too short") + "!", "New Switch Toolbox", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
 

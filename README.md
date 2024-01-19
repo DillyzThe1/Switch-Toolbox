@@ -19,9 +19,10 @@ Thank you for this wonderful tool, KillzXGaming.
 # Download
 https://github.com/DillyzThe1/Switch-Toolbox/releases
 
-~~Keep in mind this tool is still very experimental. If something breaks from a commit, you can download manually from [here](https://ci.appveyor.com/project/KillzXGaming/switch-toolbox/history). Just select a commit, go to artifacts tab and download the zip. Also be sure to report anything that breaks to [issues here](https://github.com/KillzXGaming/Switch-Toolbox/issues) on github.~~
-
-NOTE: The message above does not apply to this fork. Please use the Github releases.
+Keep in mind that, just like the original, this tool is still (and all of the new changes are) very experimental.<br>
+If something breaks from a commit, or if you would like a dev build, you can download manually from [here](https://ci.appveyor.com/project/DillyzThe1/switch-toolbox/history).<br>
+Just select a commit, go to artifacts tab and download the zip.<br>
+If you did find an issue with the latest build, please report your [issues here](https://github.com/DillyzThe1/Switch-Toolbox/issues/new) on Github.
 
 ## Discord
 DillyzThe1 (New Switch Toolbox Fork): https://discord.gg/49NFTwcYgZ<br>
@@ -43,7 +44,7 @@ Changes to file formats:
 Changes to the hex editor:
 - Edit > Trim File now exists.
 	- This feature will cut off any data beyond a chosen point, intended for prefetch files.
-	- Currently, this only crops the file off at 0x00002070. This will be adjusted to the user's liking in the future.
+	- A popup will ask how long you want the trimmed file to be.
 
 ## Original Features
 

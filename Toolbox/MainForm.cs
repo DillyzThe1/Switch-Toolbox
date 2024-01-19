@@ -1804,5 +1804,10 @@ namespace Toolbox
         {
             WebUtil.OpenURL("https://github.com/DillyzThe1/Switch-Toolbox/wiki");
         }
+
+        private void devBuildsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WebUtil.OpenURL("https://ci.appveyor.com/project/DillyzThe1/switch-toolbox/history");
+        }
     }
 }
