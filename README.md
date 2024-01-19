@@ -31,7 +31,10 @@ KillzXGaming (Original Switch Toolbox Creator): https://discord.gg/eyvGXWP
 If you'd like to support me or get help on the new version's features, you can join the [Modding Discord!](https://discord.gg/49NFTwcYgZ)<br>
 If you'd like to support the [original creator](https://github.com/KillzXGaming/), you can [donate!](https://www.paypal.com/donate?business=TCG7P6PH6V3PU&currency_code=USD)
 
-# New Features
+## New Features
+
+Opening & dumping *.barz.sz files!
+- Saving is planned soon, but first I must figure out the headers.
 
 ## Original Features
 
