@@ -168,7 +168,7 @@ namespace FirstPlugin
 
                 if (spittingBars != null) {
                     entry.AudioFile = spittingBars;
-                    entry.AudioFile.SetData(loader, entry.AudioFile.AudioFileSize + 0x20);
+                    entry.AudioFile.SetData(loader, entry.AudioFile.AudioFileSize);
                 }
 
                 AudioEntries_ZS.Add(entry);
