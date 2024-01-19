@@ -3,7 +3,7 @@ A tool to edit many formats of Nintendo Switch, 3DS and Wii U.
 
 ## Notice
 
-**This is a fork of the original [Switch Toolbox](https://github.com/KillzXGaming/Switch-Toolbox/releases).**
+**This is a fork of the original [Switch Toolbox](https://github.com/KillzXGaming/Switch-Toolbox/).**
 
 The program felt a little under-worked with newer titles, which I find that unfortunate due to my advancing needs.<br>
 So what was the solution on January 1st, 2024 when I discovered that the original Switch Toolbox was discontinued?<br>
@@ -33,11 +33,17 @@ If you'd like to support the [original creator](https://github.com/KillzXGaming/
 
 ## New Features
 
-Opening & dumping *.barz.sz files!
-- Saving is planned soon, but first I must figure out the headers.
+Changes to file formats:
+- BARS.ZS Support
+	- You can now open & dump Bars.ZS files!
+	- Saving is planned soon, but first I must figure out the headers.
+- ~~Viewing BWAV files~~
+	- DELAYED: I don't feel like fully implementing this yet, as I don't feel like it's worth my time until the Bars.ZS support is finished.
 
-~~Viewing .BWAV files~~
-- Delayed because I DON'T FEEL LIKE WORKING ALL OF THAT OUT :cryingspongebob:
+Changes to the hex editor:
+- Edit > Trim File now exists.
+	- This feature will cut off any data beyond a chosen point, intended for prefetch files.
+	- Currently, this only crops the file off at 0x00002070. This will be adjusted to the user's liking in the future.
 
 ## Original Features
 
