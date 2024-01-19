@@ -110,6 +110,7 @@ namespace FirstPlugin
                     BARSAudioFileZS audio = barsZs.AudioEntries_ZS[i].AudioFile;
 
                     AudioEntry node = new AudioEntry();
+                    node.isZS = true;
                     node.audioFile_ZS = audio;
                     node.Magic = "BWAV";
                     node.SetupMusic();
