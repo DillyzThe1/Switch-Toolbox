@@ -72,18 +72,24 @@ namespace FirstPlugin
 
         public class AudioEntry : TreeNodeCustom, IContextMenuNode
         {
+            public bool isZS = false;
             public BARSAudioFile audioFile;
+            public BARSAudioFileZS audioFile_ZS;
+
 
             public string Magic;
             public byte[] Data
             {
                 get
                 {
-                    return audioFile.data;
+                    return isZS ? audioFile_ZS.data : audioFile.data;
                 }
                 set
                 {
-                    audioFile.data = value;
+                    if (isZS)
+                        audioFile_ZS.data = value;
+                    else
+                        audioFile.data = value;
                 }
             }
 

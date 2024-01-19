@@ -9,13 +9,15 @@ using System.Text;
 
 namespace FirstPlugin
 {
-    public class BarsZsFile : BarsLib.BARS, IFileData
+    public class BarsZsFile : IFileDataZS
     {
         public ushort versNum = 0;
 
         internal ByteOrder ByteOrder;
 
-        public new bool HasMetaData
+        public ushort ByteOrderMark;
+
+        public bool HasMetaData
         {
             get
             {
@@ -31,7 +33,7 @@ namespace FirstPlugin
             }
         }
 
-        public new bool HasAudioFiles
+        public bool HasAudioFiles
         {
             get
             {
@@ -51,22 +53,22 @@ namespace FirstPlugin
         {
             public AMTA MetaData;
 
-            public BARSAudioFile AudioFile;
+            public BARSAudioFileZS AudioFile;
 
             public string name;
         }
 
         public IList<AudioEntry_ZS> AudioEntries_ZS = new List<AudioEntry_ZS>();
 
-        public BarsZsFile(Stream stream) : base(stream)
+        public BarsZsFile(Stream stream)
         {
-            FileLoader fileLoader = new FileLoader(stream, this);
-            fileLoader.Read();
+            FileLoaderBarsZS fileLoader = new FileLoaderBarsZS(stream, this);
+            fileLoader.Execute();
         }
 
 
         // stolen from filereader.cs
-        public bool CheckSignature_Ext(FileLoader loader, int length, string Identifier, long position = 0)
+        public bool CheckSignature_Ext(FileLoaderBarsZS loader, int length, string Identifier, long position = 0)
         {
             if (position < 0)
             {
@@ -96,7 +98,7 @@ namespace FirstPlugin
         }
 
         // i am so sorry for my war crimes against these files
-        void IFileData.Load(FileLoader loader)
+        void IFileDataZS.Load(FileLoaderBarsZS loader)
         {
             Console.WriteLine("zs file here we load 1 lp = " + loader.Position);
             CheckSignature_Ext(loader, 4, "BARS"); // magic number
@@ -119,20 +121,6 @@ namespace FirstPlugin
             long tableThing = (fileCount * 4) + 16;
 
             Console.WriteLine("zs file here we load 3 " + 0x10);
-            // List<uint> list = new List<uint>();
-            //List<uint> list2 = new List<uint>();
-            //for (int i = 0; i < fileCount; i++)
-           // {
-                //Console.WriteLine("Found an " + loader.ReadString(4, Encoding.ASCII) + " file.");
-                //loader.ReadUInt32();
-                //loader.CheckSignature_Ext(loader, 4, "BARS");
-                /*uint num2 = loader.ReadUInt32();
-                if (num2 != uint.MaxValue && num2 != 0)
-                {
-                    Console.WriteLine(num2);
-                    list.Add(num2);
-                }*/
-            //}
 
             for (int i = 0; i < fileCount; i++)
             {
@@ -158,7 +146,8 @@ namespace FirstPlugin
                 loader.Position = fi_data;
 
                 loader.ReadString(0x1c); // junk data?
-                long fi_dataSize = loader.ReadInt32();
+                uint fi_dataSize = loader.ReadUInt32();
+                pos_2 = loader.Position;
 
                 Console.WriteLine("dataSize " + fi_dataSize);
 
@@ -166,23 +155,81 @@ namespace FirstPlugin
 
                 Console.WriteLine(fi_fileName + ".bwav discovered. length " + fi_dataSize + ".");
 
+                //if (loader.Position + fi_dataSize > loader.Length)
+                    Console.WriteLine("ummmmmm " + (loader.Position + fi_dataSize) + " over " + loader.Length + " real 3am?!?!?!?!");
+
                 AudioEntry_ZS entry = new AudioEntry_ZS();
                 entry.name = fi_fileName;
 
-                BARSAudioFile spittingBars = new BARSAudioFile();
-                spittingBars.Magic = "BWAV";
+                loader.Position = pos_2;
+                BARSAudioFileZS spittingBars = new BARSAudioFileZS();
+                spittingBars.Load(loader);
+                spittingBars.AudioFileSize = fi_dataSize;
 
                 if (spittingBars != null) {
                     entry.AudioFile = spittingBars;
-                    entry.AudioFile.data = null;
+                    entry.AudioFile.SetData(loader, fi_dataSize);
                 }
 
                 AudioEntries_ZS.Add(entry);
 
                 tableThing += 8;
             }
-            Console.WriteLine("wharr????");
+            Console.WriteLine("wharr???? " + AudioEntries_ZS.Count);
+        }
 
+        //void IFileDataZS.Save(FileSaver saver)
+        //{ 
+        //}
+
+    }
+
+    public class BARSAudioFileZS : IFileDataZS
+    {
+        public byte[] data;
+
+        public int Alignment;
+
+        public long audioPos;
+
+        public uint AudioFileSize;
+
+        public void Load(FileLoaderBarsZS loader)
+        {
+            audioPos = loader.Position;
+            loader.ByteOrder = ByteOrder.BigEndian;
+            if (loader.ReadUInt16() == 65534)
+                loader.ByteOrder = ByteOrder.LittleEndian;
+            else
+                loader.ByteOrder = ByteOrder.BigEndian;
+
+            loader.ReadUInt16();
+            loader.ReadUInt32();
+            loader.ReadUInt32();
+            loader.ReadUInt16();
+            loader.ReadUInt16();
+            loader.ReadUInt16();
+            loader.ReadUInt16();
+            loader.ReadUInt32();
+            loader.ReadUInt32();
+            loader.ReadUInt16();
+            loader.ReadUInt16();
+            loader.ReadUInt32();
+            loader.ReadUInt32();
+
+            loader.ByteOrder = loader.BARS.ByteOrder;
+        }
+
+        internal void SetData(FileLoaderBarsZS reader, uint FileSize)
+        {
+            long position = reader.Position;
+            //reader.Seek(audioPos, SeekOrigin.Begin);
+
+            reader.Position = audioPos;
+            Console.WriteLine(audioPos + FileSize);
+            data = reader.ReadBytes((int)FileSize);
+            reader.Position = position;
+            //reader.Seek(position, SeekOrigin.Begin);
         }
     }
 }

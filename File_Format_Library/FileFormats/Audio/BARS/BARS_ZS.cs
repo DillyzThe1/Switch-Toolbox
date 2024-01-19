@@ -91,36 +91,35 @@ namespace FirstPlugin
             Console.WriteLine("barzz");
             barsZs = new BarsZsFile(stream);
 
+
+
             Console.WriteLine("helloo hi hi hiiii!!!!");
             if (barsZs.HasMetaData)
                 Nodes.Add("Meta Data");
 
-            if (barsZs.HasAudioFiles)
-                Nodes.Add(new AudioFolder("Audio"));
+            AudioFolder folder = new AudioFolder("Audio");
 
-            Console.WriteLine("read bars lol");
-            for (int i = 0; i < barsZs.AudioEntries.Count; i++)
+            if (barsZs.HasAudioFiles)
+                Nodes.Add(folder);
+
+            Console.WriteLine("read " + barsZs.AudioEntries_ZS.Count + " bars lol");
+            for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
             {
-                if (barsZs.AudioEntries[i].AudioFile != null)
+                if (barsZs.AudioEntries_ZS[i].AudioFile != null)
                 {
-                    BARSAudioFile audio = barsZs.AudioEntries_ZS[i].AudioFile;
+                    BARSAudioFileZS audio = barsZs.AudioEntries_ZS[i].AudioFile;
 
                     AudioEntry node = new AudioEntry();
-                    node.audioFile = audio;
-                    node.Magic = audio.Magic;
+                    node.audioFile_ZS = audio;
+                    node.Magic = "BWAV";
                     node.SetupMusic();
 
-                    if (audio.Magic == "FWAV")
-                        node.Text = barsZs.AudioEntries_ZS[i].name + ".bfwav";
-                    else if (audio.Magic == "FSTP")
-                        node.Text = barsZs.AudioEntries_ZS[i].name + ".bfstp";
-                    else if (audio.Magic == "BWAV")
-                        node.Text = barsZs.AudioEntries_ZS[i].name + ".bwav";
-                    else
-                        node.Text = $"{barsZs.AudioEntries_ZS[i].name}.{audio.Magic}";
+                    node.Text = barsZs.AudioEntries_ZS[i].name + ".bwav";
 
-                    Nodes[1].Nodes.Add(node);
+                    folder.Nodes.Add(node);
                 }
+                else
+                    Console.WriteLine("bar " + i + " had null audio?!");
             }
         }
 
