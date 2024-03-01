@@ -505,6 +505,7 @@
     <Compile Include="FileFormats\Pokemon\GFLX\GFBPMCATALOG\FlatBuffers\gfbpmcatalog.cs" />
     <Compile Include="FileFormats\Pokemon\GFLX\PokemonTable.cs" />
     <Compile Include="FileFormats\Pokemon\Trinity\TRANM\TRANM.cs" />
+    <Compile Include="FileFormats\RESTBL.cs" />
     <Compile Include="FileFormats\Rom\3DS\NCSDStructs.cs" />
     <Compile Include="FileFormats\Rom\3DS\NCSD.cs" />
     <Compile Include="FileFormats\Rom\3DS\RomFS.cs" />
@@ -724,6 +725,12 @@
     </Compile>
     <Compile Include="GUI\Pokemon\PokemonLoaderSwSh.Designer.cs">
       <DependentUpon>PokemonLoaderSwSh.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\RSizeTable\RestBlEditor.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\RSizeTable\RestBlEditor.Designer.cs">
+      <DependentUpon>RestBlEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\ViewportEditor.cs">
       <SubType>UserControl</SubType>
@@ -1826,6 +1833,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Pokemon\PokemonLoaderSwSh.resx">
       <DependentUpon>PokemonLoaderSwSh.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\RSizeTable\RestBlEditor.resx">
+      <DependentUpon>RestBlEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\ViewportEditor.resx">
       <DependentUpon>ViewportEditor.cs</DependentUpon>

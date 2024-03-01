@@ -9,6 +9,7 @@ using Toolbox.Library.IO;
 using FirstPlugin.Forms;
 using FirstPlugin.LuigisMansion.DarkMoon;
 using FirstPlugin.LuigisMansion3;
+using FirstPlugin.FileFormats;
 
 namespace FirstPlugin
 {
@@ -343,6 +344,7 @@ namespace FirstPlugin
             List<Type> Formats = new List<Type>();
             // NEW TOOLBOX
             Formats.Add(typeof(BARS_ZS));
+            Formats.Add(typeof(RESTBL));
 
             // OLD TOOLBOX
             Formats.Add(typeof(BFRES));
