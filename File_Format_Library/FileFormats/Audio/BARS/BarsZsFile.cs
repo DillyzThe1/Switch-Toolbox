@@ -158,6 +158,7 @@ namespace FirstPlugin
 
             Console.WriteLine("zs file here we load 3 " + 0x10);
 
+            // skip the CRC32 file name hashes
             posStarter = (fileCount * 4) + 16;
             for (int i = 0; i < fileCount; i++)
             {
@@ -176,26 +177,52 @@ namespace FirstPlugin
                 }
                 Console.WriteLine("NOT AN ERROR info " + fi_info + ", data " + fi_data);
 
-                loader.Position = fi_info;
-                //byte[] amtaDataIThink = loader.ReadBytes(0x24); // junk data?
+                /// AMTA DATA 
+                loader.Position = fi_info + 4;
+                loader.ReadUInt16(); // the endianness. we don't need to re-do that, though.
 
-                // we need to read 36 bytes here... somehow
-                loader.ReadBytes(8); // AMTA magic + 0xFFFE endian + 0x0005 AMTA version
-                // so... where's the other 28?
+                byte amtaVers_min = loader.ReadByte();
+                byte amtaVers_maj = loader.ReadByte();
+                string amtaVers = amtaVers_maj + "." + amtaVers_min;
 
-                // skip unknown bytes for now
-                loader.ReadBytes(28);
+                Console.WriteLine("AMTA v" + amtaVers + " detected.");
+                uint amtaSize = loader.ReadUInt32(); // AMTA file size
+                loader.ReadUInt32(); // unknown 0
 
-                long pos_2 = loader.Position;
-                long fi_nameOff = loader.ReadInt32() + pos_2;
-                loader.Position = fi_nameOff;
+                uint amta_dataOffset = loader.ReadUInt32(); // offset to the amta data?
+                uint amta_markerOffset = loader.ReadUInt32(); // offset to the.... marker data?
+                uint amta_minfOffset = loader.ReadUInt32(); // offset to the.... minf data?!
 
+                if (amta_dataOffset != 0)
+                    Console.WriteLine("This AMTA v" + amtaVers + " has the data offset.");
+                if (amta_markerOffset != 0)
+                    Console.WriteLine("This AMTA v" + amtaVers + " has the marker offset.");
+                if (amta_minfOffset != 0)
+                    Console.WriteLine("This AMTA v" + amtaVers + " has the minf offset.");
+
+                loader.ReadUInt32(); // unknown 3 (always 0?)
+                loader.ReadUInt32(); // unknown 4 (always 0?)
+
+                int amta_pathOffset = (int)loader.Position + (int)loader.ReadUInt32(); // string offset of path
+                loader.ReadUInt32(); // path CRC32 hash
+
+                loader.ReadUInt32(); // unknown 6
+
+                byte type = loader.ReadByte();
+                byte channels = loader.ReadByte();
+                loader.ReadByte(); // unknown 7
+                byte flags = loader.ReadByte();
+
+                // use amta data we just read
+                loader.Position = amta_pathOffset;
                 string fi_fileName = loader.ReadString(BinaryStringFormat.ZeroTerminated).Trim();// + ".bwav";
+
+                // BWAV DATA
                 loader.Position = fi_data;
 
                 loader.ReadString(0x1c); // junk data?
                 uint fi_dataSize = loader.ReadUInt32();
-                pos_2 = loader.Position;
+                long pos_2 = loader.Position;
 
                 Console.WriteLine("dataSize " + fi_dataSize);
 
@@ -220,7 +247,7 @@ namespace FirstPlugin
                 }
 
                 loader.Position = fi_info;
-                entry.debugData = loader.ReadBytes((int)(fi_nameOff - fi_info));
+                entry.debugData = loader.ReadBytes((int)amtaSize);
 
                 AudioEntries_ZS.Add(entry);
 
