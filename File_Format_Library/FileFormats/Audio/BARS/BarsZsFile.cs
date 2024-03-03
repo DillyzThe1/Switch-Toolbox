@@ -6,6 +6,11 @@ using Syroot.BinaryData;
 using BarsLib;
 using NAudio.Wave;
 using System.Text;
+using Microsoft.VisualBasic.Devices;
+using static FirstPlugin.BarsZsFile.AMTAv5;
+using System.ComponentModel;
+using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Data;
+using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Marker;
 
 namespace FirstPlugin
 {
@@ -65,11 +70,114 @@ namespace FirstPlugin
             }
         }
 
+        public class AMTAv5
+        {
+            public byte vers_min { get; set; }
+            public byte vers_maj { get; set; }
+
+            // these can just default to 0
+            public uint unk0 { get; set; }
+            public uint unk3 { get; set; }
+            public uint unk4 { get; set; }
+
+            public uint unk6 { get; set; }
+
+            public byte type { get; set; }
+            public byte channels { get; set; }
+            public byte unk7 { get; set; }
+            public byte flags { get; set; }
+
+            public AMTAv5_Data data { get; set; }
+            public AMTAv5_Marker marker { get; set; }
+            public AMTAv5_Minf minf { get; set; }
+
+            public bool hasData { get { return data != null; } }
+            public bool hasMarker { get { return marker != null; } }
+            public bool hasMinf { get { return minf != null; } }
+
+            // DATA
+            [TypeConverter(typeof(ExpandableObjectConverter))]
+            [EditorBrowsable(EditorBrowsableState.Always)]
+            public class AMTAv5_Data
+            {
+                public uint unk0 { get; set; }
+                public float unk1 { get; set; }
+                public float unk2 { get; set; }
+                public float unk3 { get; set; }
+                public float unk4 { get; set; }
+                public ushort unk6 { get; set; }
+
+                public List<AMTAv5_Point> points { get; set; }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_Point
+                {
+                    public uint unk0 { get; set; }
+                    public float unk1 { get; set; }
+
+                    public AMTAv5_Point(uint unk0, float unk1)
+                    {
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                    }
+
+                    public AMTAv5_Point()
+                    {
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                    }
+                }
+            }
+
+            // MARKER
+            [TypeConverter(typeof(ExpandableObjectConverter))]
+            [EditorBrowsable(EditorBrowsableState.Always)]
+            public class AMTAv5_Marker
+            {
+                public List<AMTAv5_MarkerIndex> markers { get; set; }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_MarkerIndex
+                {
+                    public uint id { get; set; }
+                    public string name { get; set; }
+                    public uint start { get; set; }
+                    public uint length { get; set; }
+
+                    public AMTAv5_MarkerIndex(uint id, string name, uint start, uint length)
+                    {
+                        this.id = id;
+                        this.name = name;
+                        this.start = start;
+                        this.length = length;
+                    }
+
+                    public AMTAv5_MarkerIndex()
+                    {
+                        this.id = 0;
+                        this.name = "awesomeMarker";
+                        this.start = 0;
+                        this.length = 0;
+                    }
+                }
+            }
+
+            // MINF
+            [TypeConverter(typeof(ExpandableObjectConverter))]
+            [EditorBrowsable(EditorBrowsableState.Always)]
+            public class AMTAv5_Minf
+            {
+                public bool comeBackLaterYaNerd { get { return true; } }
+            }
+        }
+
         public class AudioEntry_ZS
         {
-            public AMTA MetaData;
-
+            public AMTAv5 MetaData;
             public BARSAudioFileZS AudioFile;
+            public bool hasAudio { get { return AudioFile != null; } }
 
             public byte[] debugData;
 
@@ -156,7 +264,7 @@ namespace FirstPlugin
             */
             long posStarter = 16;
 
-            Console.WriteLine("zs file here we load 3 " + 0x10);
+            Console.WriteLine("bars.zs file here we load 3 " + 0x10);
 
             // skip the CRC32 file name hashes
             posStarter = (fileCount * 4) + 16;
@@ -178,40 +286,91 @@ namespace FirstPlugin
                 Console.WriteLine("NOT AN ERROR info " + fi_info + ", data " + fi_data);
 
                 /// AMTA DATA 
+                AMTAv5 amtav5 = new AMTAv5();
+
                 loader.Position = fi_info + 4;
                 loader.ReadUInt16(); // the endianness. we don't need to re-do that, though.
 
-                byte amtaVers_min = loader.ReadByte();
-                byte amtaVers_maj = loader.ReadByte();
-                string amtaVers = amtaVers_maj + "." + amtaVers_min;
+                amtav5.vers_min = loader.ReadByte();
+                amtav5.vers_maj = loader.ReadByte();
+                string amtaVers = amtav5.vers_maj + "." + amtav5.vers_min;
 
                 Console.WriteLine("AMTA v" + amtaVers + " detected.");
                 uint amtaSize = loader.ReadUInt32(); // AMTA file size
-                loader.ReadUInt32(); // unknown 0
+                amtav5.unk0 = loader.ReadUInt32(); // unknown 0
 
                 uint amta_dataOffset = loader.ReadUInt32(); // offset to the amta data?
                 uint amta_markerOffset = loader.ReadUInt32(); // offset to the.... marker data?
                 uint amta_minfOffset = loader.ReadUInt32(); // offset to the.... minf data?!
 
+                long pos_2 = loader.Position;
                 if (amta_dataOffset != 0)
+                {
                     Console.WriteLine("This AMTA v" + amtaVers + " has the data offset.");
-                if (amta_markerOffset != 0)
-                    Console.WriteLine("This AMTA v" + amtaVers + " has the marker offset.");
-                if (amta_minfOffset != 0)
-                    Console.WriteLine("This AMTA v" + amtaVers + " has the minf offset.");
 
-                loader.ReadUInt32(); // unknown 3 (always 0?)
-                loader.ReadUInt32(); // unknown 4 (always 0?)
+                    loader.Position = fi_info + amta_dataOffset;
+                    AMTAv5_Data datav5 = new AMTAv5_Data();
+                    datav5.unk0 = loader.ReadUInt32();
+                    datav5.unk1 = loader.ReadSingle();
+                    datav5.unk2 = loader.ReadSingle();
+                    datav5.unk3 = loader.ReadSingle();
+                    datav5.unk4 = loader.ReadSingle();
+                    ushort point_count = loader.ReadUInt16();
+                    datav5.unk6 = loader.ReadUInt16();
+
+                    datav5.points = new List<AMTAv5_Point>();
+                    for (int p = 0; p < point_count; p++)
+                        datav5.points.Add(new AMTAv5_Point(loader.ReadUInt32(), loader.ReadSingle()));
+
+                    amtav5.data = datav5;
+                }
+                if (amta_markerOffset != 0)
+                {
+                    Console.WriteLine("This AMTA v" + amtaVers + " has the marker offset.");
+                    loader.Position = fi_info + amta_markerOffset;
+
+                    uint markerCount = loader.ReadUInt32();
+                    AMTAv5_Marker markerv5 = new AMTAv5_Marker();
+                    markerv5.markers = new List<AMTAv5_MarkerIndex>();
+                    for (int m = 0; m < markerCount; m++)
+                    {
+                        loader.Position = fi_info + amta_markerOffset + 4 + 16*m;
+
+                        AMTAv5_MarkerIndex mi = new AMTAv5_MarkerIndex();
+                        mi.id = loader.ReadUInt32();
+                        long pos_markerthing = loader.Position;
+
+                        loader.Position = pos_markerthing + loader.ReadUInt32();
+                        mi.name = loader.ReadString(BinaryStringFormat.ZeroTerminated).Trim();
+
+                        loader.Position = pos_markerthing;
+                        mi.start = loader.ReadUInt32();
+                        mi.length = loader.ReadUInt32();
+
+                        markerv5.markers.Add(mi);
+                    }
+                    amtav5.marker = markerv5;
+                }
+                if (amta_minfOffset != 0)
+                {
+                    Console.WriteLine("This AMTA v" + amtaVers + " has the minf offset.");
+                    AMTAv5_Minf minfv5 = new AMTAv5_Minf();
+                    amtav5.minf = minfv5;
+                }
+                loader.Position = pos_2;
+
+                amtav5.unk3 = loader.ReadUInt32(); // unknown 3 (always 0?)
+                amtav5.unk4 = loader.ReadUInt32(); // unknown 4 (always 0?)
 
                 int amta_pathOffset = (int)loader.Position + (int)loader.ReadUInt32(); // string offset of path
                 loader.ReadUInt32(); // path CRC32 hash
 
-                loader.ReadUInt32(); // unknown 6
+                amtav5.unk6 = loader.ReadUInt32(); // unknown 6
 
-                byte type = loader.ReadByte();
-                byte channels = loader.ReadByte();
-                loader.ReadByte(); // unknown 7
-                byte flags = loader.ReadByte();
+                amtav5.type = loader.ReadByte();
+                amtav5.channels = loader.ReadByte();
+                amtav5.unk7 = loader.ReadByte(); // unknown 7
+                amtav5.flags = loader.ReadByte();
 
                 // use amta data we just read
                 loader.Position = amta_pathOffset;
@@ -222,7 +381,7 @@ namespace FirstPlugin
 
                 loader.ReadString(0x1c); // junk data?
                 uint fi_dataSize = loader.ReadUInt32();
-                long pos_2 = loader.Position;
+                pos_2 = loader.Position;
 
                 Console.WriteLine("dataSize " + fi_dataSize);
 
@@ -235,19 +394,25 @@ namespace FirstPlugin
 
                 AudioEntry_ZS entry = new AudioEntry_ZS();
                 entry.name = fi_fileName;
+                entry.MetaData = amtav5;
 
                 loader.Position = pos_2 - 0x20;
-                BARSAudioFileZS spittingBars = new BARSAudioFileZS();
-                spittingBars.Load(loader);
-                spittingBars.AudioFileSize = fi_dataSize;
 
-                if (spittingBars != null) {
-                    entry.AudioFile = spittingBars;
-                    entry.AudioFile.SetData(loader, entry.AudioFile.AudioFileSize);
+                if (fi_data > 0)
+                {
+                    BARSAudioFileZS spittingBars = new BARSAudioFileZS();
+                    spittingBars.Load(loader);
+                    spittingBars.AudioFileSize = fi_dataSize;
+
+                    if (spittingBars != null)
+                    {
+                        entry.AudioFile = spittingBars;
+                        entry.AudioFile.SetData(loader, entry.AudioFile.AudioFileSize);
+                    }
                 }
 
-                loader.Position = fi_info;
-                entry.debugData = loader.ReadBytes((int)amtaSize);
+                //loader.Position = fi_info;
+                //entry.debugData = loader.ReadBytes((int)amtaSize);
 
                 AudioEntries_ZS.Add(entry);
 

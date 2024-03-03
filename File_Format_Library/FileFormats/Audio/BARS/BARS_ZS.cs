@@ -17,6 +17,8 @@ using static FirstPlugin.BARS;
 using DKCTF;
 using static FirstPlugin.RenderInfoEnums;
 using System.Security.Cryptography;
+using static FirstPlugin.BarsZsFile;
+using static FirstPlugin.GFPAK;
 
 namespace FirstPlugin
 {
@@ -84,6 +86,31 @@ namespace FirstPlugin
             }
         }
 
+        private class BARSv5Wrapper : TreeNodeCustom
+        {
+            public BARSv5Wrapper(AMTAv5 amta) { 
+                MetaFile = amta;
+                SelectedImageKey = ImageKey = "MetaInfo";
+            }
+
+            public AMTAv5 MetaFile { get; set; }
+
+            public override void OnClick(TreeView treeview)
+            {
+                STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                if (editor == null)
+                {
+                    editor = new STPropertyGrid();
+                    LibraryGUI.LoadEditor(editor);
+                }
+                editor.Text = Text;
+                editor.Dock = DockStyle.Fill;
+                editor.LoadProperty(MetaFile, OnPropertyChanged);
+            }
+
+            private void OnPropertyChanged() { }
+        }
+
         public BarsZsFile barsZs;
         public void Load(Stream stream)
         {
@@ -95,25 +122,33 @@ namespace FirstPlugin
             barsZs = new BarsZsFile(stream);
 
 
-            Console.WriteLine("helloo hi hi hiiii!!!!");
-            if (barsZs.HasMetaData)
-                Nodes.Add("Meta Data");
+            //Console.WriteLine("helloo hi hi hiiii!!!!");
+            //if (barsZs.HasMetaData)
+            //    Nodes.Add("Meta Data");
 
-            AudioFolder folder = new AudioFolder("Audio");
+            //AudioFolder folder = new AudioFolder("Audio");
 
-            if (barsZs.HasAudioFiles)
-                Nodes.Add(folder);
+            //if (barsZs.HasAudioFiles)
+            //    Nodes.Add(folder);
 
-            TreeNode debugNode = null;
-            if (barsZs.HasDebugData)
-                debugNode = Nodes.Add("Debug Data");
+            //TreeNode debugNode = null;
+            //if (barsZs.HasDebugData)
+            //    debugNode = Nodes.Add("Debug Data");
 
             Console.WriteLine("read " + barsZs.AudioEntries_ZS.Count + " bars lol");
             for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
             {
-                if (barsZs.AudioEntries_ZS[i].AudioFile != null)
+                AudioEntry_ZS entry = barsZs.AudioEntries_ZS[i];
+                if (entry.MetaData == null)
+                    continue;
+
+                BARSv5Wrapper bars = new BARSv5Wrapper(entry.MetaData);
+                bars.Text = entry.name;
+                Nodes.Add(bars);
+
+                if (entry.hasAudio)
                 {
-                    BARSAudioFileZS audio = barsZs.AudioEntries_ZS[i].AudioFile;
+                    BARSAudioFileZS audio = entry.AudioFile;
 
                     AudioEntry node = new AudioEntry();
                     node.isZS = true;
@@ -121,19 +156,15 @@ namespace FirstPlugin
                     node.Magic = "BWAV";
                     node.SetupMusic();
 
-                    node.Text = barsZs.AudioEntries_ZS[i].name + ".bwav";
+                    node.Text = entry.name + ".bwav";
 
-                    folder.Nodes.Add(node);
+                    bars.Nodes.Add(node);
                 }
-                else
-                    Console.WriteLine("bar " + i + " had null audio?!");
 
-                if (barsZs.HasDebugData && barsZs.AudioEntries_ZS[i].debugData != null) {
-                    string awesomeName = "debug_" + i + ".bin";
-                    if (barsZs.AudioEntries_ZS[i].AudioFile != null)
-                        awesomeName = barsZs.AudioEntries_ZS[i].name + ".bin";
-                    BinEntry bin = new BinEntry(awesomeName, barsZs.AudioEntries_ZS[i].debugData);
-                    debugNode.Nodes.Add(bin);
+                if (entry.debugData != null)
+                {
+                    BinEntry bin = new BinEntry("debug.bin", barsZs.AudioEntries_ZS[i].debugData);
+                    bars.Nodes.Add(bin);
                 }
             }
         }
