@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using Syroot.BinaryData;
 using BarsLib.IO;
+using static LibHac.ExternalKeys;
 
 // STOLEN FROM BarsLib.IO.FileLoader BC IT WOULDN'T WORK AHHHHHHH
 namespace FirstPlugin
@@ -123,10 +124,91 @@ namespace FirstPlugin
             return val;
         }
     }
+
+    public class FileSaverBarsZS : BinaryDataWriter
+    {
+        public class ItemEntry
+        {
+            public class ItemOffset {
+                public string name;
+                public long at;
+                public uint value;
+
+                public ItemOffset(string name, long at, uint value) {
+                    this.name = name;
+                    this.at = at;
+                    this.value = value;
+                }
+            }
+            internal List<ItemOffset> offsets;
+            public string id;
+
+            public ItemEntry(string id) {
+                offsets = new List<ItemOffset>();
+                this.id = id;
+            }
+
+            public void SetOffsetByName(string target, uint newValue) {
+                for (int i = 0; i < offsets.Count; i++)
+                    if (offsets[i].name == target)
+                        offsets[i].value = newValue;
+            }
+
+            public void newOffset(string name, long at, uint value) {
+                offsets.Add(new ItemOffset(name, at, value));
+            }
+
+            public void newOffset(string name, long at)
+            {
+                offsets.Add(new ItemOffset(name, at, 0));
+            }
+
+            public ItemOffset getOffset(string name) {
+                for (int i = 0; i < offsets.Count; i++)
+                    if (offsets[i].name == name)
+                        return offsets[i];
+                return null;
+            }
+        }
+
+        internal BarsZsFile BARS { get; }
+        public List<ItemEntry> items { get; private set; }
+
+        public ItemEntry getEntry(string id) {
+            for (int i = 0; i < items.Count; i++)
+                if (items[i].id == id)
+                    return items[i];
+            return null;
+        }
+
+        public FileSaverBarsZS(Stream stream, BarsZsFile bars, bool leaveOpen = false) : base(stream, Encoding.ASCII, leaveOpen)
+        {
+            base.ByteOrder = ByteOrder.BigEndian;
+            BARS = bars;
+            items = new List<ItemEntry>();
+        }
+
+        public void Execute() {
+            ((IFileDataZS)BARS).Save(this);
+
+            // offset time
+            for (int i = 0; i < items.Count; i++) {
+                if (items[i].offsets != null) {
+                    for (int o = 0; o < items[i].offsets.Count; o++) {
+                        base.Position = items[i].offsets[o].at;
+                        Write((int)items[i].offsets[o].value);
+                    }
+                }
+            }
+            //
+            base.Position = 4;
+            Write((uint)BaseStream.Length);
+            Flush();
+        }
+    }
     public interface IFileDataZS
     {
         void Load(FileLoaderBarsZS loader);
-
-        //void Save(FileSaver saver);
+        void Save(FileSaverBarsZS saver);
     }
 }

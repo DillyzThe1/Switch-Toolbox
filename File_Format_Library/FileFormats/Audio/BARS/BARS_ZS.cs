@@ -267,11 +267,16 @@ namespace FirstPlugin
         public BarsZsFile barsZs;
         public void Load(Stream stream)
         {
-            CanSave = false;
+            CanSave = true;
+
+            if (MessageBox.Show("The Bars.ZS writer is NOT complete and will NEVER load in anything!"
+                + "\nIt doesn't write any audio or AMTA headers, just the BARS header!\nDo you want to enable saving?",
+                    "New Switch Toolbox", MessageBoxButtons.YesNo) == DialogResult.No)
+                CanSave = false;
 
             Text = FileName;
 
-            Console.WriteLine("barzz");
+            Console.WriteLine("barzz " + CanSave);
             barsZs = new BarsZsFile(stream);
 
             DisplayAmtas();
@@ -319,6 +324,7 @@ namespace FirstPlugin
 
         public void Save(Stream stream)
         {
+            barsZs.Save(stream);
             if (this.FilePath.EndsWith(".zs"))
             {
                 this.IFileInfo.FileCompression = new Zstb();

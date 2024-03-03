@@ -13,6 +13,9 @@ using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Data;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Marker;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Minf;
 using System.Management.Instrumentation;
+using CafeLibrary.M2;
+using Toolbox.Library.Security.Cryptography;
+using System.Runtime.InteropServices;
 
 namespace FirstPlugin
 {
@@ -88,6 +91,8 @@ namespace FirstPlugin
             public byte channels { get; set; }
             public byte unk7 { get; set; }
             public byte flags { get; set; }
+
+            public bool reserved { get; set; }
 
             public AMTAv5_Data data { get; set; }
             public AMTAv5_Marker marker { get; set; }
@@ -630,6 +635,15 @@ namespace FirstPlugin
 
             // skip the CRC32 file name hashes
             posStarter = (fileCount * 4) + 16;
+
+            List<uint> reservedCrc32s = new List<uint>();
+            loader.Position = posStarter + fileCount * 8;
+            uint reservedFiles = loader.ReadUInt32();
+            Console.WriteLine("We have " + reservedFiles + " reserved files.");
+
+            for (int i = 0; i < reservedFiles; i++)
+                reservedCrc32s.Add(loader.ReadUInt32());
+
             for (int i = 0; i < fileCount; i++)
             {
                 Console.WriteLine("lp " + loader.Position + ", ll " + loader.Length + ", posStarter " + posStarter);
@@ -882,6 +896,7 @@ namespace FirstPlugin
                 // use amta data we just read
                 loader.Position = amta_pathOffset;
                 string fi_fileName = loader.ReadString(BinaryStringFormat.ZeroTerminated).Trim();// + ".bwav";
+                amtav5.reserved = reservedCrc32s.Contains(Crc32.Compute(fi_fileName));
 
                 // BWAV DATA
                 loader.Position = fi_data;
@@ -928,10 +943,64 @@ namespace FirstPlugin
             Console.WriteLine("wharr???? " + AudioEntries_ZS.Count);
         }
 
-        //void IFileDataZS.Save(FileSaver saver)
-        //{ 
-        //}
+        void IFileDataZS.Save(FileSaverBarsZS saver)
+        {
+            // HEADER
 
+            saver.ByteOrder = ByteOrder.LittleEndian;
+            saver.Position = 0;
+            saver.Write("BARS", BinaryStringFormat.NoPrefixOrTermination);
+            saver.Position = 8;
+            // endian
+            saver.Write((byte)255);
+            saver.Write((byte)254);
+            // version
+            saver.Write((byte)2);
+            saver.Write((byte)1);
+            // file count
+            saver.Write((int)AudioEntries_ZS.Count);
+
+            for (int i = 0; i < AudioEntries_ZS.Count; i++)
+                saver.Write((int)Crc32.Compute(AudioEntries_ZS[i].name));
+
+            //
+
+
+            // OFFSETS
+
+            FileSaverBarsZS.ItemEntry offs_General = new FileSaverBarsZS.ItemEntry("general");
+            saver.items.Add(offs_General);
+
+            for (int i = 0; i < AudioEntries_ZS.Count; i++)
+            {
+                FileSaverBarsZS.ItemEntry entry = new FileSaverBarsZS.ItemEntry("audio_" + AudioEntries_ZS[i].name);
+                entry.newOffset("bamta_offset", saver.Position);
+                saver.Write((int)0);
+                entry.newOffset("bwav_offset", saver.Position);
+                saver.Write((int)0);
+                saver.items.Add(entry);
+            }
+
+
+            offs_General.newOffset("reserveCount", saver.Position);
+            uint reserves = 0;
+            saver.Write((int)0);
+            for (int i = 0; i < AudioEntries_ZS.Count; i++)
+            {
+                if (!AudioEntries_ZS[i].MetaData.reserved)
+                    continue;
+                saver.Write((int)Crc32.Compute(AudioEntries_ZS[i].name));
+                reserves++;
+            }
+            offs_General.SetOffsetByName("reserveCount", reserves);
+
+            //
+        }
+
+        public void Save(Stream stream) {
+            FileSaverBarsZS fileLoader = new FileSaverBarsZS(stream, this);
+            fileLoader.Execute();
+        }
     }
 
     public class BARSAudioFileZS : IFileDataZS
@@ -968,6 +1037,10 @@ namespace FirstPlugin
             loader.ReadUInt32();
 
             loader.ByteOrder = loader.BARS.ByteOrder;
+        }
+
+        void IFileDataZS.Save(FileSaverBarsZS saver)
+        {
         }
 
         internal void SetData(FileLoaderBarsZS reader, uint FileSize)
