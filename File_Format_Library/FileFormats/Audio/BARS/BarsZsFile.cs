@@ -190,9 +190,9 @@ namespace FirstPlugin
                 public AMTAv5_ResMinfTable0 ResMinfTable0 { get; set; }
                 public AMTAv5_ResMinfTable1 ResMinfTable1 { get; set; }
                 public AMTAv5_ResMinfTable2 ResMinfTable2 { get; set; }
-                public string ResMinfPairTable { get; set; }
-                public string ResMinfOffsetTable { get; set; }
-                public string ResMinfInstrumentInfoTable { get; set; }
+                public AMTAv5_ResMinfPairTable ResMinfPairTable { get; set; }
+                public AMTAv5_ResMinfOffsetTable ResMinfOffsetTable { get; set; }
+                public AMTAv5_ResMinfInstrumentInfoTable ResMinfInstrumentInfoTable { get; set; }
 
                 #region resminftable0
                 [TypeConverter(typeof(ExpandableObjectConverter))]
@@ -306,6 +306,97 @@ namespace FirstPlugin
                 {
                     public ushort unk0 { get; set; }
                     public List<AMTAv5_ResMinfTable2Entry> entries { get; set; }
+                }
+                #endregion
+
+                #region resminfpairtable
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfPairTableEntry
+                {
+                    public uint unk0 { get; set; }
+                    public uint unk1 { get; set; }
+
+                    public AMTAv5_ResMinfPairTableEntry(uint unk0, uint unk1)
+                    {
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                    }
+
+                    public AMTAv5_ResMinfPairTableEntry()
+                    {
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfPairTable
+                {
+                    public ushort unk0 { get; set; }
+                    public List<AMTAv5_ResMinfPairTableEntry> entries { get; set; }
+                }
+                #endregion
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfOffsetTable
+                {
+                    public ushort unk0 { get; set; }
+                    public List<uint> entries { get; set; }
+                }
+
+                #region resminfinstrumentinfo
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfInstrument
+                {
+                    public string name { get; set; }
+                    public uint unk0 { get; set; }
+                    public uint unk1 { get; set; }
+
+                    public AMTAv5_ResMinfInstrument(string name, uint unk0, uint unk1)
+                    {
+                        this.name = name;
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                    }
+
+                    public AMTAv5_ResMinfInstrument()
+                    {
+                        this.name = "instrument";
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfInstrumentInfo
+                {
+                    public uint unk0 { get; set; }
+                    public AMTAv5_ResMinfInstrument instrument { get; set; }
+
+                    public AMTAv5_ResMinfInstrumentInfo(uint unk0, AMTAv5_ResMinfInstrument instrument)
+                    {
+                        this.unk0 = unk0;
+                        this.instrument = instrument;
+                    }
+
+                    public AMTAv5_ResMinfInstrumentInfo()
+                    {
+                        this.unk0 = 0;
+                        this.instrument = null;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfInstrumentInfoTable
+                {
+                    public ushort unk0 { get; set; }
+                    public List<AMTAv5_ResMinfInstrumentInfo> entries { get; set; }
                 }
                 #endregion
             }
@@ -578,6 +669,61 @@ namespace FirstPlugin
                             loader.ReadSingle(),
                             loader.ReadUInt32()
                         ));
+                    }
+
+                    // pt
+                    loader.Position = minfOff_pairTable;
+                    minfv5.ResMinfPairTable = new AMTAv5_ResMinfPairTable();
+                    tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfPairTable.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfPairTable.entries = new List<AMTAv5_ResMinfPairTableEntry>();
+                    for (int t = 0; t < tablecount; t++)
+                    {
+                        minfv5.ResMinfPairTable.entries.Add(new AMTAv5_ResMinfPairTableEntry(
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32()
+                        ));
+                    }
+
+                    // ot
+                    loader.Position = minfOff_offsetTable;
+                    minfv5.ResMinfOffsetTable = new AMTAv5_ResMinfOffsetTable();
+                    tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfOffsetTable.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfOffsetTable.entries = new List<uint>();
+                    for (int t = 0; t < tablecount; t++)
+                        minfv5.ResMinfOffsetTable.entries.Add(loader.ReadUInt32());
+
+                    // ot
+                    loader.Position = minfOff_instrumentTable;
+                    minfv5.ResMinfInstrumentInfoTable = new AMTAv5_ResMinfInstrumentInfoTable();
+                    tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfInstrumentInfoTable.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfInstrumentInfoTable.entries = new List<AMTAv5_ResMinfInstrumentInfo>();
+                    for (int t = 0; t < tablecount; t++) {
+                        AMTAv5_ResMinfInstrumentInfo instinfo = new AMTAv5_ResMinfInstrumentInfo();
+                        instinfo.unk0 = loader.ReadUInt32();
+                        long okbuddy = loader.Position;
+                        long instOff = loader.Position + loader.ReadUInt32();
+
+                        //
+                        loader.Position = instOff;
+                        AMTAv5_ResMinfInstrument inst = new AMTAv5_ResMinfInstrument();
+                        long instOff_name = loader.Position + loader.ReadUInt32();
+                        inst.unk0 = loader.ReadUInt32();
+                        inst.unk1 = loader.ReadUInt32();
+
+                        loader.Position = instOff_name;
+                        inst.name = loader.ReadString(BinaryStringFormat.ZeroTerminated).Trim();
+
+                        instinfo.instrument = inst;
+
+                        //
+                        loader.Position = okbuddy + 4;
+                        minfv5.ResMinfInstrumentInfoTable.entries.Add(instinfo);
                     }
 
                     // ok
