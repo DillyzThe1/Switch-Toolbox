@@ -12,6 +12,7 @@ using System.ComponentModel;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Data;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Marker;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Minf;
+using System.Management.Instrumentation;
 
 namespace FirstPlugin
 {
@@ -405,6 +406,152 @@ namespace FirstPlugin
             public static uint NEXT_ID = 0;
             public AMTAv5() {
                 ID = NEXT_ID++;
+            }
+
+            public AMTAv5 Clone() {
+                AMTAv5 c = new AMTAv5();
+
+                // amta v5 itself
+                c.vers_min = this.vers_min;
+                c.vers_maj = this.vers_maj;
+                c.unk0 = this.unk0;
+                c.unk3 = this.unk3;
+                c.unk4 = this.unk4;
+                c.unk6 = this.unk6;
+                c.type = this.type;
+                c.channels = this.channels;
+                c.unk7 = this.unk7;
+                c.flags = this.flags;
+                //
+
+                // data
+                if (this.data != null) {
+                    c.data = new AMTAv5_Data();
+                    c.data.unk0 = this.data.unk0;
+                    c.data.unk1 = this.data.unk1;
+                    c.data.unk2 = this.data.unk2;
+                    c.data.unk3 = this.data.unk3;
+                    c.data.unk4 = this.data.unk4;
+                    c.data.unk6 = this.data.unk6;
+
+                    c.data.points = new List<AMTAv5_Point>();
+                    for (int i = 0; i < this.data.points.Count; i++)
+                        c.data.points.Add(new AMTAv5_Point(this.data.points[i].unk0, this.data.points[i].unk1));
+                }
+                //
+
+                // marker
+                if (this.marker != null)
+                {
+                    c.marker = new AMTAv5_Marker();
+                    c.marker.markers = new List<AMTAv5_MarkerIndex>();
+
+                    for (int i = 0; i < this.marker.markers.Count; i++)
+                        c.marker.markers.Add(new AMTAv5_MarkerIndex(this.marker.markers[i].id, this.marker.markers[i].name, this.marker.markers[i].start, this.marker.markers[i].length));
+                }
+                //
+
+                // minf
+                if (this.minf != null) {
+                    c.minf = new AMTAv5_Minf();
+
+                    c.minf.vers_maj = this.minf.vers_maj;
+                    c.minf.vers_min = this.minf.vers_min;
+                    c.minf.name = this.minf.name;
+                    c.minf.unk0 = this.minf.unk0;
+                    c.minf.sampleRate = this.minf.sampleRate;
+                    c.minf.unk1 = this.minf.unk1;
+                    c.minf.unk2 = this.minf.unk2;
+                    c.minf.unk3 = this.minf.unk3;
+                    c.minf.unk4 = this.minf.unk4;
+                    c.minf.unk5 = this.minf.unk5;
+                    c.minf.unk6 = this.minf.unk6;
+                    c.minf.unk7 = this.minf.unk7;
+                    c.minf.unk8 = this.minf.unk8;
+                    c.minf.unk15 = this.minf.unk15;
+                    c.minf.unk16 = this.minf.unk16;
+
+                    if (this.minf.ResMinfTable0 != null)
+                    {
+                        c.minf.ResMinfTable0 = new AMTAv5_ResMinfTable0();
+                        c.minf.ResMinfTable0.unk0 = this.minf.ResMinfTable0.unk0;
+
+                        c.minf.ResMinfTable0.entries = new List<AMTAv5_ResMinfTable0Entry>();
+                        for (int i = 0; i < this.minf.ResMinfTable0.entries.Count; i++)
+                        {
+                            AMTAv5_ResMinfTable0Entry ent = this.minf.ResMinfTable0.entries[i];
+                            c.minf.ResMinfTable0.entries.Add(new AMTAv5_ResMinfTable0Entry(ent.unk0, ent.unk1, ent.unk2, ent.unk3, ent.unk4, ent.unk5));
+                        }
+                    }
+
+                    if (this.minf.ResMinfTable1 != null)
+                    {
+                        c.minf.ResMinfTable1 = new AMTAv5_ResMinfTable1();
+                        c.minf.ResMinfTable1.unk0 = this.minf.ResMinfTable1.unk0;
+
+                        c.minf.ResMinfTable1.entries = new List<AMTAv5_ResMinfTable1Entry>();
+                        for (int i = 0; i < this.minf.ResMinfTable1.entries.Count; i++)
+                        {
+                            AMTAv5_ResMinfTable1Entry ent = this.minf.ResMinfTable1.entries[i];
+                            c.minf.ResMinfTable1.entries.Add(new AMTAv5_ResMinfTable1Entry(ent.unk0, ent.unk1, ent.unk2, ent.unk3));
+                        }
+                    }
+
+                    if (this.minf.ResMinfTable2 != null)
+                    {
+                        c.minf.ResMinfTable2 = new AMTAv5_ResMinfTable2();
+                        c.minf.ResMinfTable2.unk0 = this.minf.ResMinfTable2.unk0;
+
+                        c.minf.ResMinfTable2.entries = new List<AMTAv5_ResMinfTable2Entry>();
+                        for (int i = 0; i < this.minf.ResMinfTable2.entries.Count; i++)
+                        {
+                            AMTAv5_ResMinfTable2Entry ent = this.minf.ResMinfTable2.entries[i];
+                            c.minf.ResMinfTable2.entries.Add(new AMTAv5_ResMinfTable2Entry(ent.unk0, ent.unk1, ent.unk2, ent.unk3, ent.unk4));
+                        }
+                    }
+
+                    if (this.minf.ResMinfPairTable != null)
+                    {
+                        c.minf.ResMinfPairTable = new AMTAv5_ResMinfPairTable();
+                        c.minf.ResMinfPairTable.unk0 = this.minf.ResMinfPairTable.unk0;
+
+                        c.minf.ResMinfPairTable.entries = new List<AMTAv5_ResMinfPairTableEntry>();
+                        for (int i = 0; i < this.minf.ResMinfPairTable.entries.Count; i++)
+                        {
+                            AMTAv5_ResMinfPairTableEntry ent = this.minf.ResMinfPairTable.entries[i];
+                            c.minf.ResMinfPairTable.entries.Add(new AMTAv5_ResMinfPairTableEntry(ent.unk0, ent.unk1));
+                        }
+                    }
+
+                    if (this.minf.ResMinfOffsetTable != null)
+                    {
+                        c.minf.ResMinfOffsetTable = new AMTAv5_ResMinfOffsetTable();
+                        c.minf.ResMinfOffsetTable.unk0 = this.minf.ResMinfOffsetTable.unk0;
+
+                        c.minf.ResMinfOffsetTable.entries = new List<uint>();
+                        for (int i = 0; i < this.minf.ResMinfOffsetTable.entries.Count; i++)
+                            c.minf.ResMinfOffsetTable.entries.Add(this.minf.ResMinfOffsetTable.entries[i]);
+                    }
+
+                    // ugh i'll hate making this part
+                    // UPDATE: wasn't that bad but i still hated it
+                    if (this.minf.ResMinfInstrumentInfoTable != null)
+                    {
+                        c.minf.ResMinfInstrumentInfoTable = new AMTAv5_ResMinfInstrumentInfoTable();
+                        c.minf.ResMinfInstrumentInfoTable.unk0 = this.minf.ResMinfInstrumentInfoTable.unk0;
+
+                        c.minf.ResMinfInstrumentInfoTable.entries = new List<AMTAv5_ResMinfInstrumentInfo>();
+                        for (int i = 0; i < this.minf.ResMinfInstrumentInfoTable.entries.Count; i++) {
+                            AMTAv5_ResMinfInstrumentInfo og = this.minf.ResMinfInstrumentInfoTable.entries[i];
+                            c.minf.ResMinfInstrumentInfoTable.entries.Add(new AMTAv5_ResMinfInstrumentInfo(og.unk0,
+                                new AMTAv5_ResMinfInstrument(og.instrument.name, og.instrument.unk0, og.instrument.unk1)
+                            ));
+                        }
+                    }
+                }
+                //
+
+                return c;
             }
         }
 

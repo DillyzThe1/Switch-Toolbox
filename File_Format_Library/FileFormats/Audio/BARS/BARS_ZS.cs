@@ -19,6 +19,7 @@ using static FirstPlugin.RenderInfoEnums;
 using System.Security.Cryptography;
 using static FirstPlugin.BarsZsFile;
 using static FirstPlugin.GFPAK;
+using System.Linq;
 
 namespace FirstPlugin
 {
@@ -132,13 +133,15 @@ namespace FirstPlugin
 
         private class BARSv5Wrapper : TreeNodeCustom, IContextMenuNode
         {
-            public BARSv5Wrapper(AMTAv5 amta)
+            public BARSv5Wrapper(AMTAv5 amta, BARS_ZS nest)
             {
                 MetaFile = amta;
+                this.nest = nest;
                 SelectedImageKey = ImageKey = "MetaInfo";
             }
 
             public AMTAv5 MetaFile { get; set; }
+            BARS_ZS nest;
 
             public override void OnClick(TreeView treeview)
             {
@@ -156,6 +159,26 @@ namespace FirstPlugin
             public ToolStripItem[] GetContextMenuItems()
             {
                 List<ToolStripItem> Items = new List<ToolStripItem>();
+                Items.Add(new ToolStripMenuItem("Duplicate", null, delegate (object sender, EventArgs args)
+                {
+                    for (int i = 0; i < nest.barsZs.AudioEntries_ZS.Count; i++) {
+                        AudioEntry_ZS aezs = nest.barsZs.AudioEntries_ZS[i];
+                        if (aezs.MetaData.ID != MetaFile.ID)
+                            continue;
+
+                        AudioEntry_ZS aezs_new = new AudioEntry_ZS();
+                        aezs_new.name = aezs.name + "_0";
+
+                        aezs_new.AudioFile = new BARSAudioFileZS();
+                        aezs_new.AudioFile.data = aezs.AudioFile.data.ToArray();
+                        aezs_new.AudioFile.AudioFileSize = aezs.AudioFile.AudioFileSize;
+
+                        aezs_new.MetaData = aezs.MetaData.Clone();
+
+                        nest.barsZs.AudioEntries_ZS.Add(aezs_new);
+                        nest.DisplayAmtas();
+                    }
+                }));
                 Items.Add(new ToolStripMenuItem(MetaFile.data != null ? "Delete DATA" : "Create DATA", null, delegate (object sender, EventArgs args)
                 {
                     MetaFile.data = (MetaFile.data != null) ? null : new AMTAv5.AMTAv5_Data();
@@ -181,6 +204,7 @@ namespace FirstPlugin
                         editor.Refresh();
                 }));
 
+                // i hated doing this so much, but this was the best way without a context menu.
                 if (MetaFile.minf != null)
                 {
                     Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfTable0 != null ? "MINF: Delete ResMinfTable0" : "MINF: Create ResMinfTable0", null, delegate (object sender, EventArgs args)
@@ -266,7 +290,7 @@ namespace FirstPlugin
                 }
 
                 Console.WriteLine("Show " + barsZs.AudioEntries_ZS[i].name + " on the bars.");
-                BARSv5Wrapper bars = new BARSv5Wrapper(entry.MetaData);
+                BARSv5Wrapper bars = new BARSv5Wrapper(entry.MetaData, this);
                 bars.Text = entry.name;
                 Nodes.Add(bars);
 
