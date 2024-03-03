@@ -36,8 +36,9 @@ If you'd like to support the [original creator](https://github.com/KillzXGaming/
 
 Changes to file formats:
 - BARS.ZS Support
-	- You can now open & dump Bars.ZS files!
-	- Saving is planned soon, but first I must figure out the headers.
+	- You can now open, view, dump, and even modify Bars.ZS files!
+	- This includes being able to see ALL of the Table0, Table1, Table2, PairTable, OffsetTable, & InstrumentInfoTable data.
+	- Saving/Re-encoding is coming within a day or so.
 - ~~Viewing BWAV files~~
 	- DELAYED: I don't feel like fully implementing this yet, as I don't feel like it's worth my time until the Bars.ZS support is finished.
 
