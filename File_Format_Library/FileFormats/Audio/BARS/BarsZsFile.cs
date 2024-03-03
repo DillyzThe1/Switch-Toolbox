@@ -11,6 +11,7 @@ using static FirstPlugin.BarsZsFile.AMTAv5;
 using System.ComponentModel;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Data;
 using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Marker;
+using static FirstPlugin.BarsZsFile.AMTAv5.AMTAv5_Minf;
 
 namespace FirstPlugin
 {
@@ -169,7 +170,144 @@ namespace FirstPlugin
             [EditorBrowsable(EditorBrowsableState.Always)]
             public class AMTAv5_Minf
             {
-                public bool comeBackLaterYaNerd { get { return true; } }
+                public byte vers_maj { get; set; }
+                public byte vers_min { get; set; }
+                public string name { get; set; }
+                public uint unk0 { get; set; }
+                public uint sampleRate { get; set; }
+                public uint unk1 { get; set; }
+                public uint unk2 { get; set; }
+                public uint unk3 { get; set; }
+                public ushort unk4 { get; set; }
+                public byte unk5 { get; set; }
+                public byte unk6 { get; set; }
+                public ushort unk7 { get; set; }
+                public ushort unk8 { get; set; }
+                public uint unk15 { get; set; }
+                public uint unk16 { get; set; }
+
+                // TODO: MAKE THEIR DATATYPES REAL
+                public AMTAv5_ResMinfTable0 ResMinfTable0 { get; set; }
+                public AMTAv5_ResMinfTable1 ResMinfTable1 { get; set; }
+                public AMTAv5_ResMinfTable2 ResMinfTable2 { get; set; }
+                public string ResMinfPairTable { get; set; }
+                public string ResMinfOffsetTable { get; set; }
+                public string ResMinfInstrumentInfoTable { get; set; }
+
+                #region resminftable0
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable0Entry {
+                    public uint unk0 { get; set; }
+                    public ushort unk1 { get; set; }
+                    public byte unk2 { get; set; }
+                    public byte unk3 { get; set; }
+                    public ushort unk4 { get; set; }
+                    public ushort unk5 { get; set; }
+
+                    public AMTAv5_ResMinfTable0Entry(uint unk0, ushort unk1, byte unk2, byte unk3, ushort unk4, ushort unk5) {
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                        this.unk2 = unk2;
+                        this.unk3 = unk3;
+                        this.unk4 = unk4;
+                        this.unk5 = unk5;
+                    }
+
+                    public AMTAv5_ResMinfTable0Entry()
+                    {
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                        this.unk2 = 0;
+                        this.unk3 = 0;
+                        this.unk4 = 0;
+                        this.unk5 = 0;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable0
+                {
+                    public ushort unk0 { get; set; }
+                    public List<AMTAv5_ResMinfTable0Entry> entries { get; set; }
+                }
+                #endregion
+
+                #region resminftable1
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable1Entry
+                {
+                    public uint unk0 { get; set; }
+                    public uint unk1 { get; set; }
+                    public uint unk2 { get; set; }
+                    public uint unk3 { get; set; }
+
+                    public AMTAv5_ResMinfTable1Entry(uint unk0, uint unk1, uint unk2, uint unk3)
+                    {
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                        this.unk2 = unk2;
+                        this.unk3 = unk3;
+                    }
+
+                    public AMTAv5_ResMinfTable1Entry()
+                    {
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                        this.unk2 = 0;
+                        this.unk3 = 0;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable1
+                {
+                    public ushort unk0 { get; set; }
+                    public List<AMTAv5_ResMinfTable1Entry> entries { get; set; }
+                }
+                #endregion
+
+                #region resminftable2
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable2Entry
+                {
+                    public uint unk0 { get; set; }
+                    public uint unk1 { get; set; }
+                    public uint unk2 { get; set; }
+                    public float unk3 { get; set; }
+                    public uint unk4 { get; set; }
+
+                    public AMTAv5_ResMinfTable2Entry(uint unk0, uint unk1, uint unk2, float unk3, uint unk4)
+                    {
+                        this.unk0 = unk0;
+                        this.unk1 = unk1;
+                        this.unk2 = unk2;
+                        this.unk3 = unk3;
+                        this.unk4 = unk4;
+                    }
+
+                    public AMTAv5_ResMinfTable2Entry()
+                    {
+                        this.unk0 = 0;
+                        this.unk1 = 0;
+                        this.unk2 = 0;
+                        this.unk3 = 0;
+                        this.unk4 = 0;
+                    }
+                }
+
+                [TypeConverter(typeof(ExpandableObjectConverter))]
+                [EditorBrowsable(EditorBrowsableState.Always)]
+                public class AMTAv5_ResMinfTable2
+                {
+                    public ushort unk0 { get; set; }
+                    public List<AMTAv5_ResMinfTable2Entry> entries { get; set; }
+                }
+                #endregion
             }
         }
 
@@ -354,7 +492,97 @@ namespace FirstPlugin
                 if (amta_minfOffset != 0)
                 {
                     Console.WriteLine("This AMTA v" + amtaVers + " has the minf offset.");
+
+                    loader.Position = fi_info + amta_minfOffset + 6;
                     AMTAv5_Minf minfv5 = new AMTAv5_Minf();
+
+                    minfv5.vers_maj = loader.ReadByte();
+                    minfv5.vers_min = loader.ReadByte();
+                    loader.ReadUInt32(); // file size
+
+                    long minfOff_name = loader.Position + loader.ReadUInt32();
+
+                    minfv5.unk0 = loader.ReadUInt32();
+                    minfv5.sampleRate = loader.ReadUInt32();
+                    minfv5.unk1 = loader.ReadUInt32();
+                    minfv5.unk2 = loader.ReadUInt32();
+                    minfv5.unk3 = loader.ReadUInt32();
+                    minfv5.unk4 = loader.ReadUInt16();
+                    minfv5.unk5 = loader.ReadByte();
+                    minfv5.unk6 = loader.ReadByte();
+                    minfv5.unk7 = loader.ReadUInt16();
+                    minfv5.unk8 = loader.ReadUInt16();
+
+                    long minfOff_table0 = loader.Position + loader.ReadUInt32();
+                    long minfOff_table1 = loader.Position + loader.ReadUInt32();
+                    long minfOff_table2 = loader.Position + loader.ReadUInt32();
+                    long minfOff_pairTable = loader.Position + loader.ReadUInt32();
+                    long minfOff_offsetTable = loader.Position + loader.ReadUInt32();
+                    long minfOff_instrumentTable = loader.Position + loader.ReadUInt32();
+
+                    minfv5.unk15 = loader.ReadUInt32();
+                    minfv5.unk16 = loader.ReadUInt32();
+
+                    // do the offset stuff now
+                    long coolPos = loader.Position;
+
+                    loader.Position = minfOff_name;
+                    minfv5.name = loader.ReadString(BinaryStringFormat.ZeroTerminated).Trim();
+
+                    // t0
+                    loader.Position = minfOff_table0;
+                    minfv5.ResMinfTable0 = new AMTAv5_ResMinfTable0();
+                    ushort tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfTable0.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfTable0.entries = new List<AMTAv5_ResMinfTable0Entry>();
+                    for (int t = 0; t < tablecount; t++) {
+                        minfv5.ResMinfTable0.entries.Add(new AMTAv5_ResMinfTable0Entry(
+                            loader.ReadUInt32(),
+                            loader.ReadUInt16(),
+                            loader.ReadByte(),
+                            loader.ReadByte(),
+                            loader.ReadUInt16(),
+                            loader.ReadUInt16()
+                        ));
+                    }
+
+                    // t1
+                    loader.Position = minfOff_table1;
+                    minfv5.ResMinfTable1 = new AMTAv5_ResMinfTable1();
+                    tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfTable1.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfTable1.entries = new List<AMTAv5_ResMinfTable1Entry>();
+                    for (int t = 0; t < tablecount; t++) {
+                        minfv5.ResMinfTable1.entries.Add(new AMTAv5_ResMinfTable1Entry(
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32()
+                        ));
+                    }
+
+                    // t2
+                    loader.Position = minfOff_table2;
+                    minfv5.ResMinfTable2 = new AMTAv5_ResMinfTable2();
+                    tablecount = loader.ReadUInt16();
+                    minfv5.ResMinfTable2.unk0 = loader.ReadUInt16();
+
+                    minfv5.ResMinfTable2.entries = new List<AMTAv5_ResMinfTable2Entry>();
+                    for (int t = 0; t < tablecount; t++) {
+                        minfv5.ResMinfTable2.entries.Add(new AMTAv5_ResMinfTable2Entry(
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32(),
+                            loader.ReadUInt32(),
+                            loader.ReadSingle(),
+                            loader.ReadUInt32()
+                        ));
+                    }
+
+                    // ok
+                    loader.Position = coolPos;
+
                     amtav5.minf = minfv5;
                 }
                 loader.Position = pos_2;
