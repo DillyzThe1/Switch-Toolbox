@@ -63,7 +63,32 @@ namespace FirstPlugin
             }, Keys.Control | Keys.C));
 
             Items.Add(new ToolStripMenuItem("Generate from BWAV", null, delegate (object sender, EventArgs args) {
-                MessageBox.Show("Nah, I don't really FEEL like it.", "New Switch Toolbox", MessageBoxButtons.OK);
+                OpenFileDialog ofd = new OpenFileDialog();
+                ofd.FileName = Text;
+                ofd.DefaultExt = Path.GetExtension(Text);
+                ofd.Filter = "BWAV Audio Files(*.bwav)|*.bwav";
+
+                if (ofd.ShowDialog() == DialogResult.OK)
+                {
+                    AudioEntry_ZS aezs = new AudioEntry_ZS();
+                    aezs.name = Path.GetFileNameWithoutExtension(ofd.FileName);
+
+                    aezs.AudioFile = new BARSAudioFileZS();
+                    aezs.AudioFile.data = File.ReadAllBytes(ofd.FileName);
+                    aezs.AudioFile.AudioFileSize = (uint)aezs.AudioFile.data.Length;
+
+                    aezs.MetaData = new AMTAv5();
+                    aezs.MetaData.vers_min = 0;
+                    aezs.MetaData.vers_maj = 5;
+                    aezs.MetaData.unk0 = aezs.MetaData.unk3 = aezs.MetaData.unk4 = 0;
+                    aezs.MetaData.unk6 = 7;
+                    aezs.MetaData.type = 1;
+                    aezs.MetaData.channels = 2;
+                    aezs.MetaData.unk7 = aezs.MetaData.flags = 0;
+
+                    barsZs.AudioEntries_ZS.Add(aezs);
+                    DisplayAmtas();
+                }
             }, Keys.Control | Keys.N));
 
             Items.Add(new ToolStripMenuItem("Batch Export BWAVs", null, delegate (object sender, EventArgs args) {
@@ -140,11 +165,17 @@ namespace FirstPlugin
             Console.WriteLine("barzz");
             barsZs = new BarsZsFile(stream);
 
+            DisplayAmtas();
+        }
+
+        public void DisplayAmtas() {
+            Nodes.Clear();
             Console.WriteLine("read " + barsZs.AudioEntries_ZS.Count + " bars lol");
             for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
             {
                 AudioEntry_ZS entry = barsZs.AudioEntries_ZS[i];
-                if (entry.MetaData == null) {
+                if (entry.MetaData == null)
+                {
                     Console.WriteLine("um... what? the metadata of " + barsZs.AudioEntries_ZS[i].name + " is NULL?!?!");
                     continue;
                 }
