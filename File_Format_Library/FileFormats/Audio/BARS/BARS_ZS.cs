@@ -66,6 +66,21 @@ namespace FirstPlugin
                 MessageBox.Show("Nah, I don't really FEEL like it.", "New Switch Toolbox", MessageBoxButtons.OK);
             }, Keys.Control | Keys.N));
 
+            Items.Add(new ToolStripMenuItem("Batch Export BWAVs", null, delegate (object sender, EventArgs args) {
+                FolderSelectDialog fsd = new FolderSelectDialog();
+
+                if (fsd.ShowDialog() == DialogResult.OK)
+                {
+                    for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
+                    {
+                        AudioEntry_ZS entry = barsZs.AudioEntries_ZS[i];
+                        if (!entry.hasAudio)
+                            continue;
+                        File.WriteAllBytes(fsd.SelectedPath + "\\" + entry.name + ".bwav", entry.AudioFile.data);
+                    }
+                }
+            }, Keys.Control | Keys.B));
+
             return Items.ToArray();
         }
 
