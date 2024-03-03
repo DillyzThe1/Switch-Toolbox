@@ -467,33 +467,13 @@ namespace FirstPlugin
             versNum = loader.ReadUInt16(); // file vers num (we want 0x0201)
 
             Console.WriteLine("zs file here we load 2 lp = " + loader.Position);
-            byte fileCount = loader.ReadByte(); // file count
-            loader.Position += 3;
+            uint fileCount = loader.ReadUInt32(); // file count
             Console.WriteLine("zs file here we load 2.5 lp = " + loader.Position);
             //Hashes = loader.ReadUInt32s((int)fileCount);
             long position = loader.Position;
 
-
-            /*
-            AMTA time.
-            Let's take some notes, shall we?
-
-            Every file seems to have about 4 bytes of who-knows-what pointers/numbers.
-            What these 4 bytes are is what I don't know yet.
-
-            What I do know is that in BgmPlazaFestDay2.Product.600.bars.zs (decompressed), there are 3 AMTA things present.
-            The addresses for these are as follows:
-                 - 0x00000044
-                 - 0x00000E1C
-                 - 0x000021B4
-
-
-            UPDATE UPDATE UPDATE!!!!!!!
-            these are crc32 hashes of their names! don't worry about them unless exporting!
-            */
             long posStarter = 16;
-
-            Console.WriteLine("bars.zs file here we load 3 " + 0x10);
+            Console.WriteLine("bars.zs file here we load 3 " + fileCount);
 
             // skip the CRC32 file name hashes
             posStarter = (fileCount * 4) + 16;
@@ -503,11 +483,11 @@ namespace FirstPlugin
                 loader.Position = posStarter;
 
                 // amta position
-                long fi_info = loader.ReadInt32();
+                long fi_info = loader.ReadUInt32();
                 // bwav position
-                long fi_data = loader.ReadInt32();
+                long fi_data = loader.ReadUInt32();
 
-                if (fi_info > loader.Length || fi_data > loader.Length || fi_info + fi_data > loader.Length)
+                if (fi_info > loader.Length || fi_data > loader.Length)
                 {
                     Console.WriteLine("info " + fi_info + ", data " + fi_data);
                     continue;

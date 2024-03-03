@@ -62,6 +62,10 @@ namespace FirstPlugin
                 MessageBox.Show("WAHHHHH WAHHHHHH", "Baby's First Switch Toolbox", MessageBoxButtons.OK);
             }, Keys.Control | Keys.C));
 
+            Items.Add(new ToolStripMenuItem("Generate from BWAV", null, delegate (object sender, EventArgs args) {
+                MessageBox.Show("Nah, I don't really FEEL like it.", "New Switch Toolbox", MessageBoxButtons.OK);
+            }, Keys.Control | Keys.N));
+
             return Items.ToArray();
         }
 
@@ -121,27 +125,16 @@ namespace FirstPlugin
             Console.WriteLine("barzz");
             barsZs = new BarsZsFile(stream);
 
-
-            //Console.WriteLine("helloo hi hi hiiii!!!!");
-            //if (barsZs.HasMetaData)
-            //    Nodes.Add("Meta Data");
-
-            //AudioFolder folder = new AudioFolder("Audio");
-
-            //if (barsZs.HasAudioFiles)
-            //    Nodes.Add(folder);
-
-            //TreeNode debugNode = null;
-            //if (barsZs.HasDebugData)
-            //    debugNode = Nodes.Add("Debug Data");
-
             Console.WriteLine("read " + barsZs.AudioEntries_ZS.Count + " bars lol");
             for (int i = 0; i < barsZs.AudioEntries_ZS.Count; i++)
             {
                 AudioEntry_ZS entry = barsZs.AudioEntries_ZS[i];
-                if (entry.MetaData == null)
+                if (entry.MetaData == null) {
+                    Console.WriteLine("um... what? the metadata of " + barsZs.AudioEntries_ZS[i].name + " is NULL?!?!");
                     continue;
+                }
 
+                Console.WriteLine("Show " + barsZs.AudioEntries_ZS[i].name + " on the bars.");
                 BARSv5Wrapper bars = new BARSv5Wrapper(entry.MetaData);
                 bars.Text = entry.name;
                 Nodes.Add(bars);
