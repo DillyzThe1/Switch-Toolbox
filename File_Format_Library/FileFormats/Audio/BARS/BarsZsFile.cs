@@ -400,6 +400,12 @@ namespace FirstPlugin
                 }
                 #endregion
             }
+
+            public uint ID;
+            public static uint NEXT_ID = 0;
+            public AMTAv5() {
+                ID = NEXT_ID++;
+            }
         }
 
         public class AudioEntry_ZS

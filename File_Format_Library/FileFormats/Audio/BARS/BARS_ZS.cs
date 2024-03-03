@@ -130,9 +130,10 @@ namespace FirstPlugin
             }
         }
 
-        private class BARSv5Wrapper : TreeNodeCustom
+        private class BARSv5Wrapper : TreeNodeCustom, IContextMenuNode
         {
-            public BARSv5Wrapper(AMTAv5 amta) { 
+            public BARSv5Wrapper(AMTAv5 amta)
+            {
                 MetaFile = amta;
                 SelectedImageKey = ImageKey = "MetaInfo";
             }
@@ -152,7 +153,91 @@ namespace FirstPlugin
                 editor.LoadProperty(MetaFile, OnPropertyChanged);
             }
 
-            private void OnPropertyChanged() { }
+            public ToolStripItem[] GetContextMenuItems()
+            {
+                List<ToolStripItem> Items = new List<ToolStripItem>();
+                Items.Add(new ToolStripMenuItem(MetaFile.data != null ? "Delete DATA" : "Create DATA", null, delegate (object sender, EventArgs args)
+                {
+                    MetaFile.data = (MetaFile.data != null) ? null : new AMTAv5.AMTAv5_Data();
+                    
+                    STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                    if (editor != null)
+                        editor.Refresh();
+                }));
+                Items.Add(new ToolStripMenuItem(MetaFile.marker != null ? "Delete MARKER" : "Create MARKER", null, delegate (object sender, EventArgs args)
+                {
+                    MetaFile.marker = (MetaFile.marker != null) ? null : new AMTAv5.AMTAv5_Marker();
+
+                    STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                    if (editor != null)
+                        editor.Refresh();
+                }));
+                Items.Add(new ToolStripMenuItem(MetaFile.minf != null ? "Delete MINF" : "Create MINF", null, delegate (object sender, EventArgs args)
+                {
+                    MetaFile.minf = (MetaFile.minf != null) ? null : new AMTAv5.AMTAv5_Minf();
+
+                    STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                    if (editor != null)
+                        editor.Refresh();
+                }));
+
+                if (MetaFile.minf != null)
+                {
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfTable0 != null ? "MINF: Delete ResMinfTable0" : "MINF: Create ResMinfTable0", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfTable0 = (MetaFile.minf.ResMinfTable0 != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfTable0();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfTable1 != null ? "MINF: Delete ResMinfTable1" : "MINF: Create ResMinfTable1", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfTable1 = (MetaFile.minf.ResMinfTable1 != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfTable1();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfTable2 != null ? "MINF: Delete ResMinfTable2" : "MINF: Create ResMinfTable2", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfTable2 = (MetaFile.minf.ResMinfTable2 != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfTable2();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfPairTable != null ? "MINF: Delete ResMinfPairTable" : "MINF: Create ResMinfPairTable", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfPairTable = (MetaFile.minf.ResMinfPairTable != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfPairTable();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfOffsetTable != null ? "MINF: Delete ResMinfOffsetTable" : "MINF: Create ResMinfOffsetTable", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfOffsetTable = (MetaFile.minf.ResMinfOffsetTable != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfOffsetTable();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                    Items.Add(new ToolStripMenuItem(MetaFile.minf.ResMinfInstrumentInfoTable != null ? "MINF: Delete ResMinfInstrumentInfoTable" : "MINF: Create ResMinfInstrumentInfoTable", null, delegate (object sender, EventArgs args)
+                    {
+                        MetaFile.minf.ResMinfInstrumentInfoTable = (MetaFile.minf.ResMinfInstrumentInfoTable != null) ? null : new AMTAv5.AMTAv5_Minf.AMTAv5_ResMinfInstrumentInfoTable();
+
+                        STPropertyGrid editor = (STPropertyGrid)LibraryGUI.GetActiveContent(typeof(STPropertyGrid));
+                        if (editor != null)
+                            editor.Refresh();
+                    }));
+                }
+                return Items.ToArray();
+            }
+
+            private void OnPropertyChanged()
+            {
+            }
         }
 
         public BarsZsFile barsZs;
