@@ -1061,10 +1061,38 @@ namespace FirstPlugin
                     }
                 }
 
+                if (entry.MetaData.marker != null)
+                {
+                    itemEntry.SetOffsetByName("bamta_markerOffset", ((uint)saver.Position - (uint)itemEntry.getOffset("bamta_offset").value));
+                    saver.Write((int)entry.MetaData.marker.markers.Count);
+                    for (int l = 0; l < entry.MetaData.marker.markers.Count; l++) {
+                        saver.Write((int)entry.MetaData.marker.markers[l].id);
+                        itemEntry.newOffset("bamta_markers_nameOffset_" + l, saver.Position);
+                        saver.Write((int)0);
+                        saver.Write((int)entry.MetaData.marker.markers[l].start);
+                        saver.Write((int)entry.MetaData.marker.markers[l].length);
+                    }
+                }
+
                 // name
                 itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_pathOffset").at);
                 Console.WriteLine("don't ya wanna write the " + entry.name + " at " + (uint)saver.Position);
                 saver.Write(entry.name, BinaryStringFormat.ZeroTerminated);
+
+                if (entry.MetaData.marker != null)
+                {
+                    string last_intendedName = "";
+                    for (int l = 0; l < entry.MetaData.marker.markers.Count; l++) {
+                        string intendedName = entry.MetaData.marker.markers[l].name;
+                        if (last_intendedName == intendedName)
+                        {
+                            itemEntry.SetOffsetByName("bamta_markers_nameOffset_" + l, (uint)itemEntry.getOffset("bamta_markers_nameOffset_" + (l - 1)).value);
+                            continue;
+                        }
+                        itemEntry.SetOffsetByName("bamta_markers_nameOffset_" + l, ((uint)saver.Position - (uint)itemEntry.getOffset("bamta_markers_nameOffset_" + l).at));
+                        saver.Write(intendedName, BinaryStringFormat.ZeroTerminated);
+                    }
+                }
 
                 //
                 itemEntry.SetOffsetByName("bamta_fileSize", (uint)(saver.BaseStream.Length - lastLength));
