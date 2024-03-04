@@ -1181,9 +1181,35 @@ namespace FirstPlugin
 
                     #region mindTableWrites_Instrument
                     itemEntry.SetOffsetByName("bamta_minf_table_offInstrumentInfo", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_offInstrumentInfo").at);
-                    //saver.Write((ushort)entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count);
-                    saver.Write((ushort)0);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count);
+                    //saver.Write((ushort)0);
                     saver.Write((ushort)entry.MetaData.minf.ResMinfInstrumentInfoTable.unk0);
+
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfInstrumentInfo e = entry.MetaData.minf.ResMinfInstrumentInfoTable.entries[a];
+                        saver.Write((int)e.unk0);
+                        itemEntry.newOffset("instInfo_" + a, saver.Position);
+                        saver.Write((int)0);
+                    }
+
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfInstrumentInfo e = entry.MetaData.minf.ResMinfInstrumentInfoTable.entries[a];
+                        itemEntry.SetOffsetByName("instInfo_" + a, (uint)saver.Position - (uint)itemEntry.getOffset("instInfo_" + a).at);
+
+                        itemEntry.newOffset("instInfo_" + a + "_name", saver.Position);
+                        saver.Write((int)0);
+                        saver.Write((int)e.instrument.unk0);
+                        saver.Write((int)e.instrument.unk1);
+                    }
+
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfInstrumentInfo e = entry.MetaData.minf.ResMinfInstrumentInfoTable.entries[a];
+                        itemEntry.SetOffsetByName("instInfo_" + a + "_name", (uint)saver.Position - (uint)itemEntry.getOffset("instInfo_" + a + "_name").at);
+                        saver.Write(e.instrument.name, BinaryStringFormat.ZeroTerminated);
+                    }
                     #endregion
 
                     //

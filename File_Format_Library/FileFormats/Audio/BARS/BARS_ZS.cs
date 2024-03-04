@@ -57,11 +57,6 @@ namespace FirstPlugin
                 if (sfd.ShowDialog() == DialogResult.OK)
                     STFileSaver.SaveFileFormat(this, sfd.FileName);
             }, Keys.Control | Keys.S));
-            Items[0].Enabled = false;
-
-            Items.Add(new ToolStripMenuItem("cry urself to sleep", null, delegate(object sender, EventArgs args) {
-                MessageBox.Show("WAHHHHH WAHHHHHH", "Baby's First Switch Toolbox", MessageBoxButtons.OK);
-            }, Keys.Control | Keys.C));
 
             Items.Add(new ToolStripMenuItem("Generate from BWAV", null, delegate (object sender, EventArgs args) {
                 OpenFileDialog ofd = new OpenFileDialog();
@@ -269,14 +264,9 @@ namespace FirstPlugin
         {
             CanSave = true;
 
-            if (MessageBox.Show("The Bars.ZS writer is NOT complete and will NEVER load in anything!"
-                + "\nIt doesn't write any audio or AMTA headers, just the BARS header!\nDo you want to enable saving?",
-                    "New Switch Toolbox", MessageBoxButtons.YesNo) == DialogResult.No)
-                CanSave = false;
-
             Text = FileName;
 
-            Console.WriteLine("barzz " + CanSave);
+            Console.WriteLine("Spitting bars? " + CanSave);
             barsZs = new BarsZsFile(stream);
 
             DisplayAmtas();
