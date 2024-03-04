@@ -154,6 +154,29 @@ namespace FirstPlugin
             public ToolStripItem[] GetContextMenuItems()
             {
                 List<ToolStripItem> Items = new List<ToolStripItem>();
+                Items.Add(new ToolStripMenuItem("Rename", null, delegate (object sender, EventArgs args)
+                {
+                    int epicHistoricIndex = -1;
+                    for (int i = 0; i < nest.barsZs.AudioEntries_ZS.Count; i++)
+                    {
+                        AudioEntry_ZS aezs = nest.barsZs.AudioEntries_ZS[i];
+                        if (aezs.MetaData.ID != MetaFile.ID)
+                            continue;
+                        epicHistoricIndex = i;
+                    }
+                    if (epicHistoricIndex < 0)
+                        return;
+
+                    RenameDialog dialog = new RenameDialog();
+                    dialog.SetString(nest.barsZs.AudioEntries_ZS[epicHistoricIndex].name);
+
+                    if (dialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string newName = dialog.textBox1.Text;
+                        nest.barsZs.AudioEntries_ZS[epicHistoricIndex].name = newName;
+                        nest.DisplayAmtas();
+                    }
+                }));
                 Items.Add(new ToolStripMenuItem("Duplicate", null, delegate (object sender, EventArgs args)
                 {
                     for (int i = 0; i < nest.barsZs.AudioEntries_ZS.Count; i++) {
