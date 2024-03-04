@@ -1044,11 +1044,11 @@ namespace FirstPlugin
                 long epicNewPos = saver.Position;
 
                 // name
-                itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position);
+                itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_pathOffset").at);
+                Console.WriteLine("don't ya wanna write the " + entry.name + " at " + (uint)saver.Position);
                 saver.Write(entry.name, BinaryStringFormat.ZeroTerminated);
 
                 //
-                saver.Position = epicNewPos;
                 itemEntry.SetOffsetByName("bamta_fileSize", (uint)(saver.BaseStream.Length - lastLength));
             }
 
