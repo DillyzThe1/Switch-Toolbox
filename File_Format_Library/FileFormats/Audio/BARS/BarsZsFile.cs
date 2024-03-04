@@ -995,7 +995,78 @@ namespace FirstPlugin
             offs_General.SetOffsetByName("reserveCount", reserves);
 
             //
-        }
+
+
+            // AMTA
+
+            for (int i = 0; i < AudioEntries_ZS.Count; i++)
+            {
+                long lastLength = saver.BaseStream.Length;
+                AudioEntry_ZS entry = AudioEntries_ZS[i];
+                FileSaverBarsZS.ItemEntry itemEntry = saver.getEntry("audio_" + entry.name);
+                itemEntry.SetOffsetByName("bamta_offset", (uint)saver.Position);
+
+                saver.Write("AMTA", BinaryStringFormat.NoPrefixOrTermination);
+                // endian
+                saver.Write((byte)255);
+                saver.Write((byte)254);
+                // version
+                saver.Write((byte)entry.MetaData.vers_min);
+                saver.Write((byte)entry.MetaData.vers_maj);
+                //
+                itemEntry.newOffset("bamta_fileSize", saver.Position);
+                saver.Write((int)0);
+
+                saver.Write((int)entry.MetaData.unk0);
+
+                itemEntry.newOffset("bamta_dataOffset", saver.Position);
+                saver.Write((int)0);
+                itemEntry.newOffset("bamta_markerOffset", saver.Position);
+                saver.Write((int)0);
+                itemEntry.newOffset("bamta_minfOffset", saver.Position);
+                saver.Write((int)0);
+
+                saver.Write((int)entry.MetaData.unk3);
+                saver.Write((int)entry.MetaData.unk4);
+
+                itemEntry.newOffset("bamta_pathOffset", saver.Position);
+                saver.Write((int)0);
+                saver.Write((int)Crc32.Compute(AudioEntries_ZS[i].name)); // path hash
+
+                saver.Write((int)entry.MetaData.unk6);
+
+                saver.Write((byte)entry.MetaData.type);
+                saver.Write((byte)entry.MetaData.channels);
+                saver.Write((byte)entry.MetaData.unk7);
+                saver.Write((byte)entry.MetaData.flags);
+
+                // arrays
+                long epicNewPos = saver.Position;
+
+                // name
+                itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position);
+                saver.Write(entry.name, BinaryStringFormat.ZeroTerminated);
+
+                //
+                saver.Position = epicNewPos;
+                itemEntry.SetOffsetByName("bamta_fileSize", (uint)(saver.BaseStream.Length - lastLength));
+            }
+
+            //
+
+
+            // BWAV
+
+            for (int i = 0; i < AudioEntries_ZS.Count; i++)
+            {
+                AudioEntry_ZS entry = AudioEntries_ZS[i];
+                FileSaverBarsZS.ItemEntry itemEntry = saver.getEntry("audio_" + entry.name);
+                itemEntry.SetOffsetByName("bwav_offset", (uint)saver.Position);
+                saver.Write(AudioEntries_ZS[i].AudioFile.data);
+            }
+
+            //
+         }
 
         public void Save(Stream stream) {
             FileSaverBarsZS fileLoader = new FileSaverBarsZS(stream, this);
