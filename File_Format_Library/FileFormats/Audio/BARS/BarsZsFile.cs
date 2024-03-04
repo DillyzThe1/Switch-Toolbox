@@ -1074,6 +1074,129 @@ namespace FirstPlugin
                     }
                 }
 
+                if (entry.MetaData.minf != null)
+                {
+                    itemEntry.SetOffsetByName("bamta_minfOffset", ((uint)saver.Position - (uint)itemEntry.getOffset("bamta_offset").value));
+                    long oldLength = saver.BaseStream.Length;
+                    saver.Write("MINF", BinaryStringFormat.NoPrefixOrTermination);
+                    // endian
+                    saver.Write((byte)255);
+                    saver.Write((byte)254);
+                    // version
+                    saver.Write((byte)entry.MetaData.minf.vers_maj);
+                    saver.Write((byte)entry.MetaData.minf.vers_min);
+                    //
+                    itemEntry.newOffset("bamta_minf_fileSize", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_nameOffset", saver.Position);
+                    saver.Write((int)0);
+                    //
+                    saver.Write((int)entry.MetaData.minf.unk0);
+                    saver.Write((int)entry.MetaData.minf.sampleRate);
+                    saver.Write((int)entry.MetaData.minf.unk1);
+                    saver.Write((int)entry.MetaData.minf.unk2);
+                    saver.Write((int)entry.MetaData.minf.unk3);
+                    saver.Write((ushort)entry.MetaData.minf.unk4);
+                    saver.Write((byte)entry.MetaData.minf.unk5);
+                    saver.Write((byte)entry.MetaData.minf.unk6);
+                    saver.Write((ushort)entry.MetaData.minf.unk7);
+                    saver.Write((ushort)entry.MetaData.minf.unk8);
+                    //
+                    itemEntry.newOffset("bamta_minf_table_off0", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_table_off1", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_table_off2", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_table_offPair", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_table_offOffset", saver.Position);
+                    saver.Write((int)0);
+                    itemEntry.newOffset("bamta_minf_table_offInstrumentInfo", saver.Position);
+                    saver.Write((int)0);
+
+                    //
+                    saver.Write((int)entry.MetaData.minf.unk15);
+                    saver.Write((int)entry.MetaData.minf.unk16);
+
+                    //
+                    #region minfTableWrites_Indexed
+                    itemEntry.SetOffsetByName("bamta_minf_table_off0", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_off0").at);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable0.entries.Count);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable0.unk0);
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfTable0.entries.Count; a++) {
+                        AMTAv5_ResMinfTable0Entry e = entry.MetaData.minf.ResMinfTable0.entries[a];
+                        saver.Write((int)e.unk0);
+                        saver.Write((ushort)e.unk1);
+                        saver.Write((byte)e.unk2);
+                        saver.Write((byte)e.unk3);
+                        saver.Write((ushort)e.unk4);
+                        saver.Write((ushort)e.unk5);
+                    }
+
+                    itemEntry.SetOffsetByName("bamta_minf_table_off1", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_off1").at);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable1.entries.Count);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable1.unk0);
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfTable1.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfTable1Entry e = entry.MetaData.minf.ResMinfTable1.entries[a];
+                        saver.Write((int)e.unk0);
+                        saver.Write((int)e.unk1);
+                        saver.Write((int)e.unk2);
+                        saver.Write((int)e.unk3);
+                    }
+
+                    itemEntry.SetOffsetByName("bamta_minf_table_off2", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_off2").at);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable2.entries.Count);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfTable2.unk0);
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfTable2.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfTable2Entry e = entry.MetaData.minf.ResMinfTable2.entries[a];
+                        saver.Write((int)e.unk0);
+                        saver.Write((int)e.unk1);
+                        saver.Write((int)e.unk2);
+                        saver.Write((float)e.unk3);
+                        saver.Write((int)e.unk4);
+                    }
+                    #endregion
+
+
+                    #region minfTableWrites_PairOffset
+                    itemEntry.SetOffsetByName("bamta_minf_table_offPair", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_offPair").at);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfPairTable.entries.Count);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfPairTable.unk0);
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfPairTable.entries.Count; a++)
+                    {
+                        AMTAv5_ResMinfPairTableEntry e = entry.MetaData.minf.ResMinfPairTable.entries[a];
+                        saver.Write((int)e.unk0);
+                        saver.Write((int)e.unk1);
+                    }
+
+                    itemEntry.SetOffsetByName("bamta_minf_table_offOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_offOffset").at);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfOffsetTable.entries.Count);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfOffsetTable.unk0);
+                    for (int a = 0; a < entry.MetaData.minf.ResMinfOffsetTable.entries.Count; a++)
+                        saver.Write((int)entry.MetaData.minf.ResMinfOffsetTable.entries[a]);
+                    #endregion
+
+                    #region mindTableWrites_Instrument
+                    itemEntry.SetOffsetByName("bamta_minf_table_offInstrumentInfo", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_table_offInstrumentInfo").at);
+                    //saver.Write((ushort)entry.MetaData.minf.ResMinfInstrumentInfoTable.entries.Count);
+                    saver.Write((ushort)0);
+                    saver.Write((ushort)entry.MetaData.minf.ResMinfInstrumentInfoTable.unk0);
+                    #endregion
+
+                    //
+                    itemEntry.SetOffsetByName("bamta_minf_fileSize", (uint)(saver.BaseStream.Length - oldLength));
+
+                }
+
+                if (entry.MetaData.minf != null)
+                {
+                    itemEntry.SetOffsetByName("bamta_minf_nameOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_minf_nameOffset").at);
+                    saver.Write(entry.MetaData.minf.name, BinaryStringFormat.ZeroTerminated);
+                }
+
                 // name
                 itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_pathOffset").at);
                 Console.WriteLine("don't ya wanna write the " + entry.name + " at " + (uint)saver.Position);
