@@ -1230,10 +1230,10 @@ namespace FirstPlugin
 
                 if (entry.MetaData.marker != null)
                 {
-                    string last_intendedName = "";
+                    string last_intendedName = null;
                     for (int l = 0; l < entry.MetaData.marker.markers.Count; l++) {
                         string intendedName = entry.MetaData.marker.markers[l].name;
-                        if (last_intendedName == intendedName)
+                        if (last_intendedName == intendedName && l > 0)
                         {
                             itemEntry.SetOffsetByName("bamta_markers_nameOffset_" + l, (uint)itemEntry.getOffset("bamta_markers_nameOffset_" + (l - 1)).value);
                             continue;
