@@ -1043,6 +1043,24 @@ namespace FirstPlugin
                 // arrays
                 long epicNewPos = saver.Position;
 
+                if (entry.MetaData.data != null)
+                {
+                    itemEntry.SetOffsetByName("bamta_dataOffset", ((uint)saver.Position - (uint)itemEntry.getOffset("bamta_offset").value));
+                    saver.Write((int)entry.MetaData.data.unk0);
+                    saver.Write((float)entry.MetaData.data.unk1);
+                    saver.Write((float)entry.MetaData.data.unk2);
+                    saver.Write((float)entry.MetaData.data.unk3);
+                    saver.Write((float)entry.MetaData.data.unk4);
+                    saver.Write((ushort)entry.MetaData.data.points.Count);
+                    saver.Write((ushort)entry.MetaData.data.unk6);
+
+                    for (int p = 0; p < entry.MetaData.data.points.Count; p++)
+                    {
+                        saver.Write((int)entry.MetaData.data.points[p].unk0);
+                        saver.Write((float)entry.MetaData.data.points[p].unk1);
+                    }
+                }
+
                 // name
                 itemEntry.SetOffsetByName("bamta_pathOffset", (uint)saver.Position - (uint)itemEntry.getOffset("bamta_pathOffset").at);
                 Console.WriteLine("don't ya wanna write the " + entry.name + " at " + (uint)saver.Position);
