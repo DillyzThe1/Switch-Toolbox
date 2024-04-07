@@ -901,30 +901,53 @@ namespace FirstPlugin
                 // BWAV DATA
                 loader.Position = fi_data;
 
-                loader.ReadString(0x1c); // junk data?
-                uint fi_dataSize = loader.ReadUInt32();
-                pos_2 = loader.Position;
+                Console.Write("BWAV HEADER: " + loader.ReadUInt32() + "\n");
 
-                Console.WriteLine("dataSize " + fi_dataSize);
 
-                fi_dataSize = ((fi_dataSize + 13) / 14) * 8 + 0x80; // unstored file size lmao
+                // first, get some bwav header data
+                loader.Position = fi_data + 0x0E;
+                uint bwavdata_channelCount = loader.ReadUInt16();
+                Console.Write("bwav channels: " + bwavdata_channelCount + "\n");
 
-                Console.WriteLine(fi_fileName + ".bwav discovered. length " + fi_dataSize + ".");
+                //uint fi_dataSize = 0x10;// + (0x70 * bwavdata_channelCount);
+                long fi_lastByte = 0x10;
 
-                if (loader.Position + fi_dataSize > loader.Length)
-                    Console.WriteLine("ummmmmm " + (loader.Position + fi_dataSize) + " over " + loader.Length + " real 3am?!?!?!?!");
+                loader.Position = fi_data + 0x10;
+                for (uint c = 0; c < bwavdata_channelCount; c++) {
+                    loader.Position += 0x0C;
+                    uint bwavdata_sampleCount = loader.ReadUInt32();
+                    loader.Position += 0x24;
+                    uint bwavdata_sampleOffset = loader.ReadUInt32();
+                    loader.Position += 0x14;
+
+                    Console.Write("channel #" + c + " sample count: " + bwavdata_sampleCount + " and offset: " + bwavdata_sampleOffset);
+
+                    fi_lastByte = bwavdata_sampleOffset;
+                    uint samplecountttttt = (bwavdata_sampleCount / 14) * 8;
+                    samplecountttttt += (bwavdata_sampleCount % 14 == 0) ? 0 : ((bwavdata_sampleCount % 14) / 2) + (bwavdata_sampleCount % 2) + 1;
+                    Console.Write(" and sample length: " + samplecountttttt + "\n");
+                    fi_lastByte += samplecountttttt;
+                }
+
+                loader.Position = fi_data;
+                //
+
+                Console.WriteLine(fi_fileName + ".bwav discovered. length " + fi_lastByte + ".");
+
+                if (loader.Position + fi_lastByte > loader.Length)
+                    Console.WriteLine("ummmmmm " + (loader.Position + fi_lastByte) + " over " + loader.Length + " real 3am?!?!?!?!");
 
                 AudioEntry_ZS entry = new AudioEntry_ZS();
                 entry.name = fi_fileName;
                 entry.MetaData = amtav5;
 
-                loader.Position = pos_2 - 0x20;
+                loader.Position = fi_data;
 
                 if (fi_data > 0)
                 {
                     BARSAudioFileZS spittingBars = new BARSAudioFileZS();
                     spittingBars.Load(loader);
-                    spittingBars.AudioFileSize = fi_dataSize;
+                    spittingBars.AudioFileSize = (uint)fi_lastByte;
 
                     if (spittingBars != null)
                     {
