@@ -12,6 +12,7 @@ using Toolbox.Library.Forms;
 using SELib;
 using FirstPlugin.Forms;
 using static Toolbox.Library.Animations.Animation;
+using System.Security;
 
 namespace Bfres.Structs
 {
@@ -66,7 +67,7 @@ namespace Bfres.Structs
 
         public void NewBoneAnim()
         {
-            var boneAnim = new BoneAnimNode("NewBoneTarget", true);
+            var boneAnim = new BoneAnimNode(SkeletalAnim, SkeletalAnimU, "NewBoneTarget", true);
 
             if (Nodes.Count <= 0)
             {
@@ -712,7 +713,7 @@ namespace Bfres.Structs
             {
                 var bn = ska.BoneAnims[i];
 
-                BoneAnimNode bone = new BoneAnimNode(bn.Name, false);
+                BoneAnimNode bone = new BoneAnimNode(SkeletalAnim, SkeletalAnimU, bn.Name, false);
                 bone.BoneAnim = bn;
                 bone.UseSegmentScaleCompensate = bn.ApplySegmentScaleCompensate;
 
@@ -774,7 +775,7 @@ namespace Bfres.Structs
 
             foreach (ResU.BoneAnim bn in ska.BoneAnims)
             {
-                BoneAnimNode bone = new BoneAnimNode(bn.Name, false);
+                BoneAnimNode bone = new BoneAnimNode(SkeletalAnim, SkeletalAnimU, bn.Name, false);
                 bone.BoneAnimU = bn;
                 bone.UseSegmentScaleCompensate = bn.ApplySegmentScaleCompensate;
 
@@ -901,11 +902,55 @@ namespace Bfres.Structs
                 ((BFRES)Parent.Parent.Parent.Parent).LoadEditors(this);
             }
 
+            private SkeletalAnim ska;
+            public ResU.SkeletalAnim ska_u;
+
             public BoneAnim BoneAnim;
             public ResU.BoneAnim BoneAnimU;
 
+            protected new void DeleteAction(object sender, EventArgs e) { 
+                base.DeleteAction(sender, e);
+
+                Console.Write("deleting epic bone");
+                if (ska != null && BoneAnim != null)
+                    for (int i = 0; i < ska.BoneAnims.Count; i++)
+                        if (ska.BoneAnims[i].Name == BoneAnim.Name)
+                            ska.BoneAnims.RemoveAt(i);
+                if (ska_u != null && BoneAnimU != null)
+                    for (int i = 0; i < ska_u.BoneAnims.Count; i++)
+                        if (ska_u.BoneAnims[i].Name == BoneAnimU.Name)
+                            ska_u.BoneAnims.RemoveAt(i);
+                BoneAnim = null;
+                BoneAnimU = null;
+            }
+
+            protected new void RenameAction(object sender, EventArgs e)
+            {
+                if (BoneAnim == null && BoneAnimU == null)
+                    return;
+
+                base.RenameAction(sender, e);
+
+                if (ska != null && BoneAnim != null)  {
+                    for (int i = 0; i < ska.BoneAnims.Count; i++)
+                        if (ska.BoneAnims[i].Name == BoneAnim.Name)
+                            ska.BoneAnims[i].Name = Text;
+                    BoneAnim.Name = Text;
+                    Console.Write("renamed a bone to " + BoneAnim.Name);
+                }
+                if (ska_u != null && BoneAnimU != null) {
+                    for (int i = 0; i < ska_u.BoneAnims.Count; i++)
+                        if (ska_u.BoneAnims[i].Name == BoneAnimU.Name)
+                            ska_u.BoneAnims[i].Name = Text;
+                    BoneAnimU.Name = Text;
+                    Console.Write("renamed a bone to " + BoneAnimU.Name);
+                }
+            }
+
             public ResU.BoneAnim SaveDataU(bool IsEdited)
             {
+                if (BoneAnimU == null)
+                    return null;
                 BoneAnimU.Name = Text;
                 if (IsEdited)
                 {
@@ -916,6 +961,8 @@ namespace Bfres.Structs
 
             public BoneAnim SaveData(bool IsEdited)
             {
+                if (BoneAnim == null)
+                    return null;
                 BoneAnim.Name = Text;
                 if (IsEdited)
                 {
@@ -924,9 +971,10 @@ namespace Bfres.Structs
                 return BoneAnim;
             }
 
-            public BoneAnimNode(string bname, bool LoadContextMenus) : base(bname, LoadContextMenus)
+            public BoneAnimNode(SkeletalAnim ska, ResU.SkeletalAnim ska_u, string bname, bool LoadContextMenus) : base(bname, LoadContextMenus)
             {
-
+                this.ska = ska;
+                this.ska_u = ska_u;
             }
         }
     }

@@ -1687,9 +1687,11 @@ namespace FirstPlugin
                     {
                         ((FSKA)group.Nodes[i]).SkeletalAnim.BoneAnims.Clear();
                         ((FSKA)group.Nodes[i]).SkeletalAnim.Name = ((FSKA)group.Nodes[i]).Text;
-                        for (int b = 0; b < ((FSKA)group.Nodes[i]).Bones.Count; b++)
-                            ((FSKA)group.Nodes[i]).SkeletalAnim.BoneAnims.Add(
-                                ((FSKA.BoneAnimNode)((FSKA)group.Nodes[i]).Bones[b]).SaveData(((FSKA)group.Nodes[i]).IsEdited));
+                        for (int b = 0; b < ((FSKA)group.Nodes[i]).Bones.Count; b++) {
+                            FSKA.BoneAnimNode hehe = ((FSKA.BoneAnimNode)((FSKA)group.Nodes[i]).Bones[b]);
+                            if (hehe != null)
+                                ((FSKA)group.Nodes[i]).SkeletalAnim.BoneAnims.Add(hehe.SaveData(((FSKA)group.Nodes[i]).IsEdited));
+                        }
 
                         resFile.SkeletalAnims.Add(((FSKA)group.Nodes[i]).SkeletalAnim);
                     }
@@ -1815,13 +1817,15 @@ namespace FirstPlugin
                     }
                     break;
                 case BRESGroupType.SkeletalAnim:
-                for (int i = 0; i < group.Nodes.Count; i++)
+                    for (int i = 0; i < group.Nodes.Count; i++)
                     {
                         ((FSKA)group.Nodes[i]).SkeletalAnimU.BoneAnims.Clear();
                         ((FSKA)group.Nodes[i]).SkeletalAnimU.Name = ((FSKA)group.Nodes[i]).Text;
-                        for (int b = 0; b < ((FSKA)group.Nodes[i]).Bones.Count; b++)
-                            ((FSKA)group.Nodes[i]).SkeletalAnimU.BoneAnims.Add(
-                                ((FSKA.BoneAnimNode)((FSKA)group.Nodes[i]).Bones[b]).SaveDataU(((FSKA)group.Nodes[i]).IsEdited));
+                        for (int b = 0; b < ((FSKA)group.Nodes[i]).Bones.Count; b++) {
+                            FSKA.BoneAnimNode hehe = ((FSKA.BoneAnimNode)((FSKA)group.Nodes[i]).Bones[b]);
+                            if (hehe != null)
+                                ((FSKA)group.Nodes[i]).SkeletalAnimU.BoneAnims.Add(hehe.SaveDataU(((FSKA)group.Nodes[i]).IsEdited));
+                        }
 
                         resFileU.SkeletalAnims.Add(group.Nodes[i].Text, ((FSKA)group.Nodes[i]).SkeletalAnimU);
                     }
