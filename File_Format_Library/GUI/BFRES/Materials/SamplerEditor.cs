@@ -13,6 +13,8 @@ using Bfres.Structs;
 using ResUGX2 = Syroot.NintenTools.Bfres.GX2;
 using ResGFX = Syroot.NintenTools.NSW.Bfres.GFX;
 using ResNX = Syroot.NintenTools.NSW.Bfres;
+using Toolbox.Library.Forms.Dialogs;
+using FirstPlugin.GUI.BFRES.Materials;
 
 namespace FirstPlugin.Forms
 {
@@ -376,50 +378,61 @@ namespace FirstPlugin.Forms
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            var result = MessageBox.Show("NOTE! Texture maps are adjusted by shader options which link by shaders. These are not possible to edit yet, do you want to continue?", "Material Editor", MessageBoxButtons.YesNoCancel, MessageBoxIcon.Exclamation);
-            if (result == DialogResult.OK)
+            var result = MessageBox.Show("NOTE! Texture maps are adjusted by shader options which link by shaders. These are not possible to edit yet, do you want to continue?", "Material Editor", MessageBoxButtons.OKCancel, MessageBoxIcon.Exclamation);
+
+            if (result != DialogResult.OK)
+                return;
+
+            Console.Write("TEX MAP: they hit ok");
+
+            MaterialAdditionForm maf = new MaterialAdditionForm();
+            if (maf.ShowDialog(this) == DialogResult.Cancel)
+                return;
+
+            Console.Write("TEX MAP: they hit ok again\n(name: " + maf.texName.Text + ", sampler: " + maf.texSampler.Text + ")");
+
+            var tex = new MatTexture();
+            tex.SamplerName = GetSamplerName(maf.texSampler.Text);
+            tex.FragShaderSampler = maf.texSampler.Text;
+            tex.Name = maf.texName.Text;
+            tex.Type = Toolbox.Library.STGenericMatTexture.TextureType.Unknown;
+            tex.WrapModeS = STTextureWrapMode.Repeat;
+            tex.WrapModeT = STTextureWrapMode.Repeat;
+            tex.WrapModeW = STTextureWrapMode.Clamp;
+
+            if (material.GetResFileU() != null)
             {
-                var tex = new MatTexture();
-                tex.SamplerName = GetSamplerName("_a0");
-                tex.FragShaderSampler = "_a0";
-                tex.Name = "Untitled";
-                tex.Type = Toolbox.Library.STGenericMatTexture.TextureType.Unknown;
-                tex.WrapModeS = STTextureWrapMode.Repeat;
-                tex.WrapModeT = STTextureWrapMode.Repeat;
-                tex.WrapModeW = STTextureWrapMode.Clamp;
-
-                if (material.GetResFileU() != null)
-                {
-                    var texSampler = new ResUGX2.TexSampler();
-                    texSampler.BorderType = ResUGX2.GX2TexBorderType.ClearBlack;
-                    texSampler.ClampX = ResUGX2.GX2TexClamp.Wrap;
-                    texSampler.ClampY = ResUGX2.GX2TexClamp.Wrap;
-                    texSampler.ClampZ = ResUGX2.GX2TexClamp.Clamp;
-                    texSampler.DepthCompareEnabled = false;
-                    texSampler.DepthCompareFunc = ResUGX2.GX2CompareFunction.Never;
-                    texSampler.MagFilter = ResUGX2.GX2TexXYFilterType.Point;
-                    texSampler.MaxAnisotropicRatio = ResUGX2.GX2TexAnisoRatio.Ratio_1_1;
-                    texSampler.MinFilter = ResUGX2.GX2TexXYFilterType.Point;
-                    texSampler.MipFilter = ResUGX2.GX2TexMipFilterType.Linear;
-                    texSampler.ZFilter = 0;
-                    texSampler.MaxLod = 13;
-                    texSampler.MinLod = 0;
-                    texSampler.LodBias = 0;
-                    tex.wiiUSampler = texSampler;
-                }
-                else
-                {
-                    var texSampler = new ResNX.Sampler();
-                    tex.switchSampler = texSampler;
-                }
-                material.TextureMaps.Add(tex);
-
-                var item = new ListViewItem();
-                item.Text = "Untitled";
-                item.SubItems.Add(tex.SamplerName);
-                item.SubItems.Add(tex.FragShaderSampler);
-                textureRefListView.Items.Add(item);
+                Console.Write("TEX MAP: wii u");
+                var texSampler = new ResUGX2.TexSampler();
+                texSampler.BorderType = ResUGX2.GX2TexBorderType.ClearBlack;
+                texSampler.ClampX = ResUGX2.GX2TexClamp.Wrap;
+                texSampler.ClampY = ResUGX2.GX2TexClamp.Wrap;
+                texSampler.ClampZ = ResUGX2.GX2TexClamp.Clamp;
+                texSampler.DepthCompareEnabled = false;
+                texSampler.DepthCompareFunc = ResUGX2.GX2CompareFunction.Never;
+                texSampler.MagFilter = ResUGX2.GX2TexXYFilterType.Point;
+                texSampler.MaxAnisotropicRatio = ResUGX2.GX2TexAnisoRatio.Ratio_1_1;
+                texSampler.MinFilter = ResUGX2.GX2TexXYFilterType.Point;
+                texSampler.MipFilter = ResUGX2.GX2TexMipFilterType.Linear;
+                texSampler.ZFilter = 0;
+                texSampler.MaxLod = 13;
+                texSampler.MinLod = 0;
+                texSampler.LodBias = 0;
+                tex.wiiUSampler = texSampler;
             }
+            else
+            {
+                Console.Write("TEX MAP: switch");
+                var texSampler = new ResNX.Sampler();
+                tex.switchSampler = texSampler;
+            }
+            material.TextureMaps.Add(tex);
+
+            var item = new ListViewItem();
+            item.Text = maf.texName.Text;
+            item.SubItems.Add(tex.SamplerName);
+            item.SubItems.Add(tex.FragShaderSampler);
+            textureRefListView.Items.Add(item);
         }
 
         private void btnRemove_Click(object sender, EventArgs e)

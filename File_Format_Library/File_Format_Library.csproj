@@ -617,6 +617,12 @@
     <Compile Include="GUI\BCH\MetaData\UserDataParser.Designer.cs">
       <DependentUpon>UserDataParser.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\BFRES\Materials\MaterialAdditionForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\BFRES\Materials\MaterialAdditionForm.Designer.cs">
+      <DependentUpon>MaterialAdditionForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\BXFNT\CharacterSelector.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -1779,6 +1785,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\BCH\MetaData\UserDataParser.resx">
       <DependentUpon>UserDataParser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\BFRES\Materials\MaterialAdditionForm.resx">
+      <DependentUpon>MaterialAdditionForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\BXFNT\CharacterSelector.resx">
       <DependentUpon>CharacterSelector.cs</DependentUpon>
