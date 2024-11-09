@@ -31,24 +31,28 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MSBTEditor));
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
-            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
-            this.fontSizeCB = new Toolbox.Library.Forms.STComboBox();
-            this.fontFamiltyCB = new Toolbox.Library.Forms.STComboBox();
-            this.stToolStrip1 = new Toolbox.Library.Forms.STToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.listViewCustom1 = new Toolbox.Library.Forms.ListViewCustom();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.splitContainer3 = new System.Windows.Forms.SplitContainer();
             this.editTextTB = new Toolbox.Library.Forms.STTextBox();
             this.stLabel1 = new Toolbox.Library.Forms.STLabel();
             this.originalTextTB = new Toolbox.Library.Forms.STTextBox();
             this.stLabel2 = new Toolbox.Library.Forms.STLabel();
             this.hexEditor1 = new Toolbox.Library.Forms.HexEditor();
             this.stLabel3 = new Toolbox.Library.Forms.STLabel();
+            this.fontSizeCB = new Toolbox.Library.Forms.STComboBox();
+            this.fontFamiltyCB = new Toolbox.Library.Forms.STComboBox();
+            this.stToolStrip1 = new Toolbox.Library.Forms.STToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.stMenuStrip1 = new Toolbox.Library.Forms.STMenuStrip();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadFontToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stContextMenuStrip1 = new Toolbox.Library.Forms.STContextMenuStrip(this.components);
+            this.convertToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.jsonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportJSONToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -70,8 +74,8 @@
             this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(0, 52);
             this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 52);
             this.splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -84,6 +88,26 @@
             this.splitContainer1.Size = new System.Drawing.Size(916, 468);
             this.splitContainer1.SplitterDistance = 305;
             this.splitContainer1.TabIndex = 11;
+            // 
+            // listViewCustom1
+            // 
+            this.listViewCustom1.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.listViewCustom1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.listViewCustom1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listViewCustom1.HideSelection = false;
+            this.listViewCustom1.Location = new System.Drawing.Point(0, 0);
+            this.listViewCustom1.Name = "listViewCustom1";
+            this.listViewCustom1.OwnerDraw = true;
+            this.listViewCustom1.Size = new System.Drawing.Size(305, 468);
+            this.listViewCustom1.TabIndex = 0;
+            this.listViewCustom1.UseCompatibleStateImageBehavior = false;
+            this.listViewCustom1.View = System.Windows.Forms.View.Details;
+            this.listViewCustom1.SelectedIndexChanged += new System.EventHandler(this.listViewCustom1_SelectedIndexChanged);
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Width = 305;
             // 
             // splitContainer2
             // 
@@ -122,70 +146,6 @@
             this.splitContainer3.Size = new System.Drawing.Size(607, 287);
             this.splitContainer3.SplitterDistance = 202;
             this.splitContainer3.TabIndex = 0;
-            // 
-            // fontSizeCB
-            // 
-            this.fontSizeCB.BorderColor = System.Drawing.Color.Empty;
-            this.fontSizeCB.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.fontSizeCB.ButtonColor = System.Drawing.Color.Empty;
-            this.fontSizeCB.FormattingEnabled = true;
-            this.fontSizeCB.IsReadOnly = false;
-            this.fontSizeCB.Location = new System.Drawing.Point(493, 24);
-            this.fontSizeCB.Name = "fontSizeCB";
-            this.fontSizeCB.Size = new System.Drawing.Size(81, 21);
-            this.fontSizeCB.TabIndex = 15;
-            this.fontSizeCB.SelectedIndexChanged += new System.EventHandler(this.fontSizeCB_SelectedIndexChanged);
-            // 
-            // fontFamiltyCB
-            // 
-            this.fontFamiltyCB.BorderColor = System.Drawing.Color.Empty;
-            this.fontFamiltyCB.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
-            this.fontFamiltyCB.ButtonColor = System.Drawing.Color.Empty;
-            this.fontFamiltyCB.FormattingEnabled = true;
-            this.fontFamiltyCB.IsReadOnly = false;
-            this.fontFamiltyCB.Location = new System.Drawing.Point(310, 24);
-            this.fontFamiltyCB.Name = "fontFamiltyCB";
-            this.fontFamiltyCB.Size = new System.Drawing.Size(176, 21);
-            this.fontFamiltyCB.TabIndex = 14;
-            this.fontFamiltyCB.SelectedIndexChanged += new System.EventHandler(this.fontFamiltyCB_SelectedIndexChanged);
-            // 
-            // stToolStrip1
-            // 
-            this.stToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
-            this.stToolStrip1.Location = new System.Drawing.Point(0, 24);
-            this.stToolStrip1.Name = "stToolStrip1";
-            this.stToolStrip1.Size = new System.Drawing.Size(922, 25);
-            this.stToolStrip1.TabIndex = 13;
-            this.stToolStrip1.Text = "stToolStrip1";
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
-            this.toolStripButton1.Text = "toolStripButton1";
-            // 
-            // listViewCustom1
-            // 
-            this.listViewCustom1.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.listViewCustom1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.columnHeader1});
-            this.listViewCustom1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listViewCustom1.Location = new System.Drawing.Point(0, 0);
-            this.listViewCustom1.Name = "listViewCustom1";
-            this.listViewCustom1.OwnerDraw = true;
-            this.listViewCustom1.Size = new System.Drawing.Size(305, 468);
-            this.listViewCustom1.TabIndex = 0;
-            this.listViewCustom1.UseCompatibleStateImageBehavior = false;
-            this.listViewCustom1.View = System.Windows.Forms.View.Details;
-            this.listViewCustom1.SelectedIndexChanged += new System.EventHandler(this.listViewCustom1_SelectedIndexChanged);
-            // 
-            // columnHeader1
-            // 
-            this.columnHeader1.Width = 305;
             // 
             // editTextTB
             // 
@@ -250,11 +210,59 @@
             this.stLabel3.TabIndex = 4;
             this.stLabel3.Text = "Hex View:";
             // 
+            // fontSizeCB
+            // 
+            this.fontSizeCB.BorderColor = System.Drawing.Color.Empty;
+            this.fontSizeCB.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.fontSizeCB.ButtonColor = System.Drawing.Color.Empty;
+            this.fontSizeCB.FormattingEnabled = true;
+            this.fontSizeCB.IsReadOnly = false;
+            this.fontSizeCB.Location = new System.Drawing.Point(493, 24);
+            this.fontSizeCB.Name = "fontSizeCB";
+            this.fontSizeCB.Size = new System.Drawing.Size(81, 21);
+            this.fontSizeCB.TabIndex = 15;
+            this.fontSizeCB.SelectedIndexChanged += new System.EventHandler(this.fontSizeCB_SelectedIndexChanged);
+            // 
+            // fontFamiltyCB
+            // 
+            this.fontFamiltyCB.BorderColor = System.Drawing.Color.Empty;
+            this.fontFamiltyCB.BorderStyle = System.Windows.Forms.ButtonBorderStyle.Solid;
+            this.fontFamiltyCB.ButtonColor = System.Drawing.Color.Empty;
+            this.fontFamiltyCB.FormattingEnabled = true;
+            this.fontFamiltyCB.IsReadOnly = false;
+            this.fontFamiltyCB.Location = new System.Drawing.Point(310, 24);
+            this.fontFamiltyCB.Name = "fontFamiltyCB";
+            this.fontFamiltyCB.Size = new System.Drawing.Size(176, 21);
+            this.fontFamiltyCB.TabIndex = 14;
+            this.fontFamiltyCB.SelectedIndexChanged += new System.EventHandler(this.fontFamiltyCB_SelectedIndexChanged);
+            // 
+            // stToolStrip1
+            // 
+            this.stToolStrip1.HighlightSelectedTab = false;
+            this.stToolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1});
+            this.stToolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.stToolStrip1.Name = "stToolStrip1";
+            this.stToolStrip1.Size = new System.Drawing.Size(922, 25);
+            this.stToolStrip1.TabIndex = 13;
+            this.stToolStrip1.Text = "stToolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
             // stMenuStrip1
             // 
+            this.stMenuStrip1.HighlightSelectedTab = false;
             this.stMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewToolStripMenuItem,
-            this.loadFontToolStripMenuItem});
+            this.loadFontToolStripMenuItem,
+            this.convertToolStripMenuItem});
             this.stMenuStrip1.Location = new System.Drawing.Point(0, 0);
             this.stMenuStrip1.Name = "stMenuStrip1";
             this.stMenuStrip1.Size = new System.Drawing.Size(922, 24);
@@ -278,6 +286,37 @@
             // 
             this.stContextMenuStrip1.Name = "stContextMenuStrip1";
             this.stContextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // convertToolStripMenuItem
+            // 
+            this.convertToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.jsonToolStripMenuItem});
+            this.convertToolStripMenuItem.Name = "convertToolStripMenuItem";
+            this.convertToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.convertToolStripMenuItem.Text = "Convert";
+            // 
+            // jsonToolStripMenuItem
+            // 
+            this.jsonToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importJSONToolStripMenuItem,
+            this.exportJSONToolStripMenuItem});
+            this.jsonToolStripMenuItem.Name = "jsonToolStripMenuItem";
+            this.jsonToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.jsonToolStripMenuItem.Text = "Json";
+            // 
+            // importJSONToolStripMenuItem
+            // 
+            this.importJSONToolStripMenuItem.Enabled = false;
+            this.importJSONToolStripMenuItem.Name = "importJSONToolStripMenuItem";
+            this.importJSONToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importJSONToolStripMenuItem.Text = "Import JSON";
+            // 
+            // exportJSONToolStripMenuItem
+            // 
+            this.exportJSONToolStripMenuItem.Name = "exportJSONToolStripMenuItem";
+            this.exportJSONToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportJSONToolStripMenuItem.Text = "Export JSON";
+            this.exportJSONToolStripMenuItem.Click += new System.EventHandler(this.exportJSONToolStripMenuItem_Click);
             // 
             // MSBTEditor
             // 
@@ -335,5 +374,9 @@
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private Toolbox.Library.Forms.STComboBox fontFamiltyCB;
         private Toolbox.Library.Forms.STComboBox fontSizeCB;
+        private System.Windows.Forms.ToolStripMenuItem convertToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem jsonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem importJSONToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportJSONToolStripMenuItem;
     }
 }

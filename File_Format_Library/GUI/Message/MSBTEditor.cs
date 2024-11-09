@@ -10,6 +10,11 @@ using System.Windows.Forms;
 using Toolbox.Library.Forms;
 using Toolbox.Library;
 using Toolbox.Library.IO;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using DKCTF;
+using static FirstPlugin.MSBT;
+using LayoutBXLYT.Cafe;
 
 namespace FirstPlugin.Forms
 {
@@ -183,6 +188,26 @@ namespace FirstPlugin.Forms
 
          //   Runtime.MessageEditor.FontFamily = fontFamiltyCB.SelectedText;
          //   Runtime.MessageEditor.FontSize = fontSize;
+        }
+
+        private void exportJSONToolStripMenuItem_Click(object sender, EventArgs e) {
+            JObject translationKeys = new JObject();
+            foreach (var i in activeMessageFile.header.Label1.Labels) {
+                translationKeys.Add(new JProperty(i.Name, Encoding.Unicode.GetString(activeMessageFile.header.Text2.TextData[(int)i.Index].Data)));
+            }
+            JObject json = new JObject(
+                new JProperty("keys", translationKeys)
+            );
+            SaveFileDialog sfd1 = new SaveFileDialog();
+            sfd1.Filter = "JSON|*.json";
+            sfd1.Title = "Save formatted MSBT as JSON.";
+            //sfd1.ShowDialog();
+
+            if (sfd1.ShowDialog() == DialogResult.OK) {
+                System.IO.File.WriteAllText(sfd1.FileName, json.ToString());
+            }
+            //Console.WriteLine(json.ToString());
+            //System.IO.File.WriteAllText(FileName, Newtonsoft.Json.JsonConvert.SerializeObject(SkeletalAnim, Newtonsoft.Json.Formatting.Indented));
         }
     }
 }

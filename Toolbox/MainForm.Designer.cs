@@ -64,6 +64,7 @@
             this.consoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.requestFeatureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.devBuildsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.repositoryAboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.wikiPageToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
@@ -86,7 +87,6 @@
             this.stToolStrip1 = new Toolbox.Library.Forms.STToolStrip();
             this.saveToolStripButton = new System.Windows.Forms.ToolStripButton();
             this.updateToolstrip = new System.Windows.Forms.ToolStripButton();
-            this.devBuildsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.stPanel1.SuspendLayout();
             this.tabControlContextMenuStrip.SuspendLayout();
@@ -371,9 +371,16 @@
             // aboutToolStripMenuItem1
             // 
             this.aboutToolStripMenuItem1.Name = "aboutToolStripMenuItem1";
-            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.aboutToolStripMenuItem1.Size = new System.Drawing.Size(156, 22);
             this.aboutToolStripMenuItem1.Text = "About";
             this.aboutToolStripMenuItem1.Click += new System.EventHandler(this.aboutToolStripMenuItem1_Click);
+            // 
+            // devBuildsToolStripMenuItem
+            // 
+            this.devBuildsToolStripMenuItem.Name = "devBuildsToolStripMenuItem";
+            this.devBuildsToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
+            this.devBuildsToolStripMenuItem.Text = "Dev Builds";
+            this.devBuildsToolStripMenuItem.Click += new System.EventHandler(this.devBuildsToolStripMenuItem_Click);
             // 
             // newProjectToolStripMenuItem
             // 
@@ -384,20 +391,20 @@
             this.featureRequestToolStripMenuItem,
             this.dillyzThe1sDiscordToolStripMenuItem});
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.newProjectToolStripMenuItem.Text = "New Project";
             // 
             // repositoryAboutToolStripMenuItem
             // 
             this.repositoryAboutToolStripMenuItem.Name = "repositoryAboutToolStripMenuItem";
-            this.repositoryAboutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.repositoryAboutToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.repositoryAboutToolStripMenuItem.Text = "Repository";
             this.repositoryAboutToolStripMenuItem.Click += new System.EventHandler(this.repositoryToolStripMenuItem1_Click);
             // 
             // wikiPageToolStripMenuItem1
             // 
             this.wikiPageToolStripMenuItem1.Name = "wikiPageToolStripMenuItem1";
-            this.wikiPageToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.wikiPageToolStripMenuItem1.Size = new System.Drawing.Size(178, 22);
             this.wikiPageToolStripMenuItem1.Text = "Wiki Page";
             this.wikiPageToolStripMenuItem1.Click += new System.EventHandler(this.wikiPageToolStripMenuItem1_Click);
             // 
@@ -405,7 +412,7 @@
             // 
             this.bugReportToolStripMenuItem.AccessibleDescription = "requestFeatureToolStripMenuItem1_Click";
             this.bugReportToolStripMenuItem.Name = "bugReportToolStripMenuItem";
-            this.bugReportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bugReportToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.bugReportToolStripMenuItem.Text = "Bug Report";
             this.bugReportToolStripMenuItem.Click += new System.EventHandler(this.reportBugToolStripMenuItem_Click);
             // 
@@ -413,14 +420,14 @@
             // 
             this.featureRequestToolStripMenuItem.AccessibleDescription = "requestFeatureToolStripMenuItem1_Click";
             this.featureRequestToolStripMenuItem.Name = "featureRequestToolStripMenuItem";
-            this.featureRequestToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.featureRequestToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.featureRequestToolStripMenuItem.Text = "Feature Request";
             this.featureRequestToolStripMenuItem.Click += new System.EventHandler(this.requestFeatureToolStripMenuItem1_Click);
             // 
             // dillyzThe1sDiscordToolStripMenuItem
             // 
             this.dillyzThe1sDiscordToolStripMenuItem.Name = "dillyzThe1sDiscordToolStripMenuItem";
-            this.dillyzThe1sDiscordToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dillyzThe1sDiscordToolStripMenuItem.Size = new System.Drawing.Size(178, 22);
             this.dillyzThe1sDiscordToolStripMenuItem.Text = "DillyzThe1\'s Discord";
             this.dillyzThe1sDiscordToolStripMenuItem.Click += new System.EventHandler(this.dillyzThe1sDiscordToolStripMenuItem_Click);
             // 
@@ -432,7 +439,7 @@
             this.donateToOriginalToolStripMenuItem,
             this.killzXGamingToolStripMenuItem});
             this.originalProjectToolStripMenuItem.Name = "originalProjectToolStripMenuItem";
-            this.originalProjectToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.originalProjectToolStripMenuItem.Size = new System.Drawing.Size(156, 22);
             this.originalProjectToolStripMenuItem.Text = "Original Project";
             // 
             // repositoryToolStripMenuItem
@@ -592,13 +599,6 @@
             this.updateToolstrip.Text = "toolStripButton1";
             this.updateToolstrip.ToolTipText = "Update Tool";
             this.updateToolstrip.Click += new System.EventHandler(this.updateToolstrip_Click);
-            // 
-            // devBuildsToolStripMenuItem
-            // 
-            this.devBuildsToolStripMenuItem.Name = "devBuildsToolStripMenuItem";
-            this.devBuildsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.devBuildsToolStripMenuItem.Text = "Dev Builds";
-            this.devBuildsToolStripMenuItem.Click += new System.EventHandler(this.devBuildsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
