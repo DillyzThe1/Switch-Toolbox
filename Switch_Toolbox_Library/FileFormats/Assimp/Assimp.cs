@@ -407,6 +407,10 @@ namespace Toolbox.Library
         {
             var matTex = new STGenericMatTexture();
 
+            matTex.Name = System.IO.Path.GetFileNameWithoutExtension(tex.FilePath);
+            matTex.WrapModeS = SetWrapMode(tex.WrapModeU);
+            matTex.WrapModeT = SetWrapMode(tex.WrapModeV);
+
             switch (type)
             {
                 case TextureType.Diffuse:
@@ -433,13 +437,12 @@ namespace Toolbox.Library
                 case TextureType.Displacement:
                     break;
                 default:
+                    string[] typeParts = matTex.Name.Split('_');
+                    string typeExt = typeParts[typeParts.Length - 1];
+                    Console.WriteLine("(Assimp.cs) Unrecognized texture type! Name: " + matTex.Name + ", Ext: " + typeExt + ".");
                     matTex.Type = STGenericMatTexture.TextureType.Unknown;
                     break;
             }
-
-            matTex.Name = System.IO.Path.GetFileNameWithoutExtension(tex.FilePath);
-            matTex.WrapModeS = SetWrapMode(tex.WrapModeU);
-            matTex.WrapModeT = SetWrapMode(tex.WrapModeV);
 
             STConsole.WriteLine($"Getting assimp texture slot {matTex.Name} Type {matTex.Type}");
 

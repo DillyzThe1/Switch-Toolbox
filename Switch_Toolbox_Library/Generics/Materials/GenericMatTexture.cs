@@ -99,6 +99,42 @@ namespace Toolbox.Library
             SubSurfaceScattering = 15,
         }
 
+        public static string texTypeName(TextureType type) {
+            switch (type) {
+                case TextureType.Diffuse:
+                    return "Diffuse";
+                case TextureType.Normal:
+                    return "Normal";
+                case TextureType.Specular:
+                    return "Specular";
+                case TextureType.Emission:
+                    return "Emission";
+                case TextureType.DiffuseLayer2:
+                    return "DiffuseLayer2";
+                case TextureType.TeamColor:
+                    return "TeamColor";
+                case TextureType.Transparency:
+                    return "Transparency";
+                case TextureType.Shadow:
+                    return "Shadow";
+                case TextureType.AO:
+                    return "AO";
+                case TextureType.Light:
+                    return "Light";
+                case TextureType.Roughness:
+                    return "Roughness";
+                case TextureType.Metalness:
+                    return "Metalness";
+                case TextureType.MRA:
+                    return "MRA";
+                case TextureType.SphereMap:
+                    return "SphereMap";
+                case TextureType.SubSurfaceScattering:
+                    return "SubSurfaceScattering";
+            }
+            return "Unknown";
+        }
+
         public static readonly Dictionary<STTextureMinFilter, TextureMinFilter> minfilter = new Dictionary<STTextureMinFilter, TextureMinFilter>()
         {
             {  STTextureMinFilter.LinearMipMapNearest, TextureMinFilter.LinearMipmapLinear},

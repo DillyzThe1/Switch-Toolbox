@@ -1016,6 +1016,12 @@ namespace Bfres.Structs
                                             case STGenericMatTexture.TextureType.MRA:
                                                 t.Name = "Basic_MRA";
                                                 break;
+                                            case STGenericMatTexture.TextureType.AO:
+                                                t.Name = "Basic_Ao";
+                                                break;
+                                            case STGenericMatTexture.TextureType.TeamColor:
+                                                t.Name = "Basic_Tcl";
+                                                break;
                                             case STGenericMatTexture.TextureType.Shadow:
                                                 t.Name = "Basic_Bake_st0";
                                                 break;

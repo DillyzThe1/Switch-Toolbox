@@ -201,13 +201,9 @@ namespace FirstPlugin.Forms
             SaveFileDialog sfd1 = new SaveFileDialog();
             sfd1.Filter = "JSON|*.json";
             sfd1.Title = "Save formatted MSBT as JSON.";
-            //sfd1.ShowDialog();
-
             if (sfd1.ShowDialog() == DialogResult.OK) {
                 System.IO.File.WriteAllText(sfd1.FileName, json.ToString());
             }
-            //Console.WriteLine(json.ToString());
-            //System.IO.File.WriteAllText(FileName, Newtonsoft.Json.JsonConvert.SerializeObject(SkeletalAnim, Newtonsoft.Json.Formatting.Indented));
         }
     }
 }

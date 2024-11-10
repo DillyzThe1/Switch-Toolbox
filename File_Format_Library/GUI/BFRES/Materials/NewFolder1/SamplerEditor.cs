@@ -177,6 +177,26 @@ namespace FirstPlugin.Forms
                 case "_n1": return "normal 1";
                 case "_n2": return "normal 2";
                 case "_n3": return "normal 3";
+                case "_r0": return "roughness 0";
+                case "_r1": return "roughness 1";
+                case "_r2": return "roughness 2";
+                case "_r3": return "roughness 3";
+                case "_m0": return "metalness 0";
+                case "_m1": return "metalness 1";
+                case "_m2": return "metalness 2";
+                case "_m3": return "metalness 3";
+                case "_ao0": return "ambient occlusion 0";
+                case "_ao1": return "ambient occlusion 1";
+                case "_ao2": return "ambient occlusion 2";
+                case "_ao3": return "ambient occlusion 3";
+                case "_su0": return "teamcolor 0";
+                case "_su1": return "teamcolor 1";
+                case "_su2": return "teamcolor 2";
+                case "_su3": return "teamcolor 3";
+                case "_e0": return "emission 0";
+                case "_e1": return "emission 1";
+                case "_e2": return "emission 2";
+                case "_e3": return "emission 3";
                 default:
                     return "";
             }

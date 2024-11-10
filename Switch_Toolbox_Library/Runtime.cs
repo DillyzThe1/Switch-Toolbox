@@ -395,6 +395,7 @@ namespace Toolbox.Library
             RoughnessMap = 16,
             SubSurfaceScatteringMap = 17,
             EmmissionMap = 18,
+            TeamColorMap = 19
         }
         public enum UVChannel
         {

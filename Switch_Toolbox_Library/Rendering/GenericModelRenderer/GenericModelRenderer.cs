@@ -283,6 +283,22 @@ namespace Toolbox.Library.Rendering
                     shader.SetBoolToInt("HasDiffuse", true);
                     TextureUniform(shader, mat, true, "DiffuseMap", matex);
                 }
+                if (matex.Type == STGenericMatTexture.TextureType.Normal) {
+                    shader.SetBoolToInt("HasNormalMap", true);
+                    TextureUniform(shader, mat, true, "DiffuseMap", matex);
+                }
+                if (matex.Type == STGenericMatTexture.TextureType.Roughness) {
+                    shader.SetBoolToInt("HasRoughnessMap", true);
+                    TextureUniform(shader, mat, true, "RoughnessMap", matex);
+                }
+                if (matex.Type == STGenericMatTexture.TextureType.Metalness) {
+                    shader.SetBoolToInt("HasMetalnessMap", true);
+                    TextureUniform(shader, mat, true, "MetalnessMap", matex);
+                }
+                if (matex.Type == STGenericMatTexture.TextureType.TeamColor) {
+                    shader.SetBoolToInt("HasTeamColorMap", true);
+                    TextureUniform(shader, mat, true, "TeamColorMap", matex);
+                }
             }
         }
 

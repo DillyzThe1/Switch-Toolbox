@@ -70,6 +70,7 @@ uniform sampler2D MRA;
 uniform sampler2D BOTWSpecularMap;
 uniform sampler2D SphereMap;
 uniform sampler2D SubSurfaceScatteringMap;
+uniform sampler2D TeamColorMap;
 
 uniform samplerCube irradianceMap;
 uniform samplerCube specularIbl;
@@ -83,6 +84,7 @@ uniform vec4 fresnelParams;
 uniform vec4 base_color_mul_color;
 uniform vec3 emission_color;
 uniform vec3 specular_color;
+uniform vec3 curTeamColor;
 
 // Shader Options
 uniform float uking_texture2_texcoord;
@@ -111,6 +113,7 @@ uniform int HasRoughnessMap;
 uniform int HasMRA;
 uniform int HasBOTWSpecularMap;
 uniform int HasSubSurfaceScatteringMap;
+uniform int HasTeamColorMap;
 
 uniform int roughnessAmount;
 
@@ -216,6 +219,11 @@ vec3 saturation(vec3 rgb, float adjustment)
 
 float GetComponent(int Type, vec4 Texture);
 
+float lerp(float a, float b, float ratio)
+{
+	return a + ratio * (b - a);
+}
+
 void main()
 {
     bool RenderAsLighting = renderType == 2;
@@ -252,6 +260,13 @@ void main()
 		albedo.g = GetComponent(GreenChannel, DiffuseTex);
 		albedo.b = GetComponent(BlueChannel, DiffuseTex);
 	}
+
+    // Splatoon team color support.
+    if (HasTeamColorMap == 1) {
+         albedo.r = lerp(albedo.r, curTeamColor.r, texture(TeamColorMap, f_texcoord0).r);
+         albedo.g = lerp(albedo.g, curTeamColor.g, texture(TeamColorMap, f_texcoord0).g);
+         albedo.b = lerp(albedo.b, curTeamColor.b, texture(TeamColorMap, f_texcoord0).b);
+    }
 
 	float metallic = 0;
     if (HasMetalnessMap == 1)
@@ -356,7 +371,7 @@ void main()
     fragColor.rgb = vec3(0);
     fragColor.rgb += diffuseTerm;
     fragColor.rgb += specularTerm;
-    fragColor.rgb += emissionTerm;
+    //fragColor.rgb += emissionTerm;
 
     // Global brightness adjustment.
     fragColor.rgb *= 2.5;
@@ -397,7 +412,7 @@ void main()
 	    fragColor.rgb = vec3(0);
         fragColor.rgb += diffuseTerm;
 	    fragColor.rgb += specularTerm;
-	    fragColor.rgb += emissionTerm;
+	    //fragColor.rgb += emissionTerm;
 		 // Global brightness adjustment.
 		 fragColor.rgb *= 1.5;
 	    // HDR tonemapping

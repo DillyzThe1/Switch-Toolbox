@@ -316,6 +316,18 @@ namespace FirstPlugin
                     shader.SetBoolToInt("HasAmbientMap", true);
                     TextureUniform(shader, mat, true, "AmbientMap", matex);
                 }
+                if (matex.Type == STGenericMatTexture.TextureType.Metalness) {
+                    shader.SetBoolToInt("HasMetalnessMap", true);
+                    TextureUniform(shader, mat, true, "MetalnessMap", matex);
+                }
+                if (matex.Type == STGenericMatTexture.TextureType.Emission) {
+                    shader.SetBoolToInt("HasEmissionMap", true);
+                    TextureUniform(shader, mat, true, "EmissionMap", matex);
+                }
+                if (matex.Type == STGenericMatTexture.TextureType.Roughness) {
+                    shader.SetBoolToInt("HasRoughnessMap", true);
+                    TextureUniform(shader, mat, true, "RoughnessMap", matex);
+                }
             }
         }
 

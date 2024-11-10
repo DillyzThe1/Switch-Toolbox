@@ -855,7 +855,7 @@ namespace FirstPlugin
                 {
                     bool IsAlbedo0 = useSampler == "_a0";
                     bool IsNormal = useSampler == "_n0";
-                    bool IsTeamColor = useSampler == "_cp0" || useSampler == "_su0";
+                    bool IsTeamColor = /*useSampler == "_cp0" ||*/ useSampler == "_su0";
                     bool IsRoughness = useSampler == "_r0";
                     bool IsMetalness = useSampler == "_m0";
                     bool IsEmissive = useSampler == "_e0";
@@ -1065,6 +1065,31 @@ namespace FirstPlugin
                     {
                         m.HasShadowMap = true;
                         texture.Type = MatTexture.TextureType.Shadow;
+                    }
+
+
+                    // I'm including this in the general shader category because of 3 reasons:
+                    // 1. Where is the active game selection?! It's not obvious enough to any user, let alone me, that this is a thing.
+                    // 2. If this is "general", why wouldn't roughness mapping and metalness mapping be a thing?
+                    // 3. If the inclusion of team color is really that big of a deal for some games, then they should be separated, not teamcolor.
+
+                    // DO NOT USE THE 2CL AS TCL
+                    if (/*useSampler == "_cp0" ||*/ useSampler == "_su0") {
+                        m.HasTeamColorMap = true;
+                        texture.Type = MatTexture.TextureType.TeamColor;
+                    }
+                    if (useSampler == "_r0") {
+                        m.HasRoughnessMap = true;
+                        texture.Type = MatTexture.TextureType.Roughness;
+                    }
+                    if (useSampler == "_m0") {
+                        m.HasMetalnessMap = true;
+                        texture.Type = MatTexture.TextureType.Metalness;
+                    }
+
+                    else if (useSampler == "_ao0") {
+                        m.HasAmbientOcclusionMap = true;
+                        texture.Type = MatTexture.TextureType.AO;
                     }
                 }
 

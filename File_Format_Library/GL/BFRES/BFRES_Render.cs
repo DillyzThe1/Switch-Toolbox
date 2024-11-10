@@ -778,7 +778,10 @@ namespace FirstPlugin
             shader.SetVector3("albedo_tex_color", new Vector3(1, 1, 1));
             shader.SetVector3("emission_color", new Vector3(1, 1, 1));
             shader.SetVector3("specular_color", new Vector3(1, 1, 1));
-            
+
+            // REMEMBER TO CHANGE THE TEAMCOLOR HERE
+            shader.SetVector3("curTeamColor", new Vector3(1, 0.2f, 0.2f));
+
             shader.SetFloat("fuv1_mtx", 0);
 
             //SRT
@@ -809,6 +812,7 @@ namespace FirstPlugin
             SetUniformData(mat, shader, "albedo_tex_color");
             SetUniformData(mat, shader, "emission_color");
             SetUniformData(mat, shader, "specular_color");
+            SetUniformData(mat, shader, "curTeamColor");
 
 
             //This uniform sets various maps for BOTW to use second UV channel

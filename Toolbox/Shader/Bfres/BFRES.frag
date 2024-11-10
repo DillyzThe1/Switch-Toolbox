@@ -31,6 +31,8 @@ uniform sampler2D BOTWSpecularMap;
 uniform sampler2D SphereMap;
 uniform sampler2D SubSurfaceScatteringMap;
 
+uniform sampler2D TeamColorMap;
+
 // Viewport Camera/Lighting
 uniform mat4 mtxCam;
 uniform mat4 mtxMdl;
@@ -66,6 +68,8 @@ uniform vec4 base_color_mul_color;
 uniform vec3 emission_color;
 uniform vec3 specular_color;
 
+uniform vec3 curTeamColor;
+
 uniform vec4 const_color0;
 uniform vec3 albedo_tex_color;
 
@@ -98,6 +102,8 @@ uniform int HasMetalnessMap;
 uniform int HasRoughnessMap;
 uniform int HasMRA;
 uniform int HasSubSurfaceScatteringMap;
+
+uniform int HasTeamColorMap;
 
 // Diffuse Channel Toggles
 uniform int RedChannel;
@@ -148,6 +154,11 @@ vec3 SpecularPass(vec3 I, vec3 normal, int HasSpecularMap, sampler2D SpecularMap
 vec3 ReflectionPass(vec3 N, vec3 I, vec4 diffuseMap, vec3 Specular, float aoBlend, vec3 tintColor, VertexAttributes vert);
 
 float GetComponent(int Type, vec4 Texture);
+
+float lerp(float a, float b, float ratio)
+{
+	return a + ratio * (b - a);
+}
 
 void main()
 {
@@ -209,6 +220,13 @@ void main()
 		vec4 AlbLayer = vec4(texture(DiffuseLayer, f_texcoord3).rgba);
 		albedo.rgb = mix(albedo.rgb, AlbLayer.rgb, AlbLayer.a);
 	}
+
+    // Splatoon team color support.
+    if (HasTeamColorMap == 1) {
+         albedo.r = lerp(albedo.r, curTeamColor.r, texture(TeamColorMap, f_texcoord0).r);
+         albedo.g = lerp(albedo.g, curTeamColor.g, texture(TeamColorMap, f_texcoord0).g);
+         albedo.b = lerp(albedo.b, curTeamColor.b, texture(TeamColorMap, f_texcoord0).b);
+    }
 
     // Default Shader
     vec4 alpha = texture2D(DiffuseMap, f_texcoord0).aaaa;

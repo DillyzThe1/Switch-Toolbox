@@ -480,7 +480,7 @@ namespace Bfres.Structs
         public bool HasSpecularMap = false;
         public bool HasEmissionMap = false;
         public bool HasDiffuseLayer = false;
-        public bool HasTeamColorMap = false; //Splatoon uses this (TLC)
+        public bool HasTeamColorMap = false; //Splatoon uses this (TCL)
         public bool HasTransparencyMap = false;
         public bool HasShadowMap = false;
         public bool HasAmbientOcclusionMap = false;

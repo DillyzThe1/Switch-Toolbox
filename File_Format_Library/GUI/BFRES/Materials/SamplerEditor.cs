@@ -259,7 +259,7 @@ namespace FirstPlugin.Forms
 
                 MatTexture matTex = (MatTexture)material.TextureMaps[index];
 
-                samplerHintTB.Text = matTex.Type.ToString();
+                samplerHintTB.Text = STGenericMatTexture.texTypeName(matTex.Type);
 
                 string name = matTex.Name;
                 textureNameTB.Text = name;

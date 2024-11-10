@@ -81,6 +81,8 @@ uniform vec4 base_color_mul_color;
 uniform vec3 emission_color;
 uniform vec3 specular_color;
 
+uniform vec3 curTeamColor;
+
 // Shader Options
 uniform float uking_texture2_texcoord;
 uniform float bake_shadow_type;
@@ -104,6 +106,7 @@ uniform int HasMetalnessMap;
 uniform int HasRoughnessMap;
 uniform int HasMRA;
 uniform int HasSubSurfaceScatteringMap;
+uniform int HasTeamColorMap;
 
 uniform int roughnessAmount;
 
@@ -187,9 +190,14 @@ void main()
 		N = CalcBumpedNormal(normal, NormalMap, vert, uking_texture2_texcoord);
 
 	float metallic = 0;
-	float roughness = 1;
+	float roughness = 0.5;
 	vec3 specIntensity = vec3(1);
 	float ao = 1;
+    vec3 teamColor = vec3(0);
+
+    if (HasTeamColorMap == 1) {
+		 teamColor = texture(TeamColorMap, displayTexCoord).r * curTeamColor;
+    }
 
 	if (HasMRA == 1) //Kirby Star Allies PBR map
 	{
@@ -254,7 +262,10 @@ void main()
         fragColor = vertexColor;
 	else if (renderType == 6) //Display Ambient Occlusion
 	{
-        fragColor = vec4(vec3(ao), 1);
+	    if (HasAmbientOcclusionMap == 1)
+            fragColor = vec4(vec3(ao), 1);
+        else
+            fragColor = vec4(0, 0, 0, 0.5);
 	}
     else if (renderType == 7) // uv coords
         fragColor = vec4(displayTexCoord.x, displayTexCoord.y, 1, 1);
@@ -292,7 +303,7 @@ void main()
         }
 		else
         {
-            fragColor = vec4(1);
+            fragColor = vec4(0, 0, 0, 0.5);
         }
     }
 	else if (renderType == 13) //Specular
@@ -311,16 +322,22 @@ void main()
         }
 		else
         {
-            fragColor = vec4(1);
+            fragColor = vec4(0, 0, 0, 0.5);
         }
 	}
 	else if (renderType == 15) //MetalnessMap
     {
-        fragColor = vec4(vec3(metallic), 1);
+        if (HasMetalnessMap == 1)
+            fragColor = vec4(vec3(metallic), 1);
+        else
+            fragColor = vec4(0, 0, 0, 0.5);
     }
 	else if (renderType == 16) //RoughnessMap
     {
-        fragColor = vec4(vec3(roughness), 1);
+        if (HasRoughnessMap == 1)
+            fragColor = vec4(vec3(roughness), 1);
+        else
+            fragColor = vec4(0, 0, 0, 0.5);
     }
 	else if (renderType == 17) //SubSurfaceScatteringMap
     {
@@ -331,7 +348,7 @@ void main()
         }
 		else
         {
-            fragColor = vec4(1);
+            fragColor = vec4(0, 0, 0, 0.5);
         }
     }
 	else if (renderType == 18) //EmmissionMap
@@ -343,7 +360,18 @@ void main()
         }
 		else
         {
-            fragColor = vec4(1);
+            fragColor = vec4(0, 0, 0, 0.5);
+        }
+    }
+	else if (renderType == 19) // TeamColorMap
+    {
+	    if (HasTeamColorMap == 1)
+        {
+            fragColor = vec4(teamColor, 1);
+        }
+		else
+        {
+            fragColor = vec4(0, 0, 0, 0.5);
         }
     }
 
