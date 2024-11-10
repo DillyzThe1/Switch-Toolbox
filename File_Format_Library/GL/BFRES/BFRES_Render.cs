@@ -97,6 +97,7 @@ namespace FirstPlugin
         }
 
         public override void Draw(GL_ControlModern control, Pass pass) {
+
             DrawBfres(control, pass);
         }
 
@@ -141,7 +142,6 @@ namespace FirstPlugin
 
             shader.UseProgram();
             control.UpdateModelMatrix(ModelTransform * Matrix4.CreateScale(Runtime.previewScale));
-
             Matrix4 camMat = control.CameraMatrix;
             Matrix4 mdlMat = control.ModelMatrix;
             Matrix4 projMat = control.ProjectionMatrix;
@@ -175,6 +175,7 @@ namespace FirstPlugin
             shader.SetVector3("difLightColor", new Vector3(1));
             shader.SetVector3("ambLightColor", new Vector3(1));
 
+
             GL.Enable(EnableCap.AlphaTest);
             GL.AlphaFunc(AlphaFunction.Gequal, 0.1f);
 
@@ -199,6 +200,24 @@ namespace FirstPlugin
             GL.Disable(EnableCap.DepthTest);
             GL.Enable(EnableCap.DepthTest);
             GL.Enable(EnableCap.CullFace);
+        }
+
+        private byte rc_r = 125, rc_g = 255, rc_b = 0;
+        private void rainbowRotation() {
+            if (rc_r == 0 && rc_g == 0 && rc_b == 0)
+                rc_r = 255;
+            else if (rc_r == 0 && rc_g < 255 && rc_b > 0)
+                rc_g++;
+            else if (rc_r == 0 && rc_g == 255 && rc_b > 0)
+                rc_b--;
+            else if (rc_r == 255 && rc_g == 0 && rc_b < 255)
+                rc_b++;
+            else if (rc_r == 255 && rc_g > 0 && rc_b == 0)
+                rc_g--;
+            else if (rc_r > 0 && rc_g == 0 && rc_b == 255)
+                rc_r--;
+            else if (rc_r < 255 && rc_g == 255 && rc_b == 0)
+                rc_r++;
         }
 
         private void DrawModels(SF.Shader shader, GL_ControlModern control)
@@ -780,7 +799,7 @@ namespace FirstPlugin
             shader.SetVector3("specular_color", new Vector3(1, 1, 1));
 
             // REMEMBER TO CHANGE THE TEAMCOLOR HERE
-            shader.SetVector3("curTeamColor", new Vector3(1, 0.2f, 0.2f));
+            shader.SetVector3("curTeamColor", new Vector3(TeamColorSelector.teamColor.R / 255.0f, TeamColorSelector.teamColor.G / 255.0f, TeamColorSelector.teamColor.B / 255.0f));
 
             shader.SetFloat("fuv1_mtx", 0);
 

@@ -62,6 +62,7 @@
             this.optionsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadShadersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uVViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.teamColorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stPanel1.SuspendLayout();
             this.stContextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -88,13 +89,13 @@
             // toOriginToolStripMenuItem1
             // 
             this.toOriginToolStripMenuItem1.Name = "toOriginToolStripMenuItem1";
-            this.toOriginToolStripMenuItem1.Size = new System.Drawing.Size(125, 22);
+            this.toOriginToolStripMenuItem1.Size = new System.Drawing.Size(124, 22);
             this.toOriginToolStripMenuItem1.Text = "To Origin";
             // 
             // toCenterToolStripMenuItem
             // 
             this.toCenterToolStripMenuItem.Name = "toCenterToolStripMenuItem";
-            this.toCenterToolStripMenuItem.Size = new System.Drawing.Size(125, 22);
+            this.toCenterToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.toCenterToolStripMenuItem.Text = "To Center";
             // 
             // stPanel1
@@ -206,14 +207,14 @@
             // toOriginToolStripMenuItem
             // 
             this.toOriginToolStripMenuItem.Name = "toOriginToolStripMenuItem";
-            this.toOriginToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.toOriginToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.toOriginToolStripMenuItem.Text = "To Origin";
             this.toOriginToolStripMenuItem.Click += new System.EventHandler(this.toOriginToolStripMenuItem_Click);
             // 
             // toActiveModelToolStripMenuItem
             // 
             this.toActiveModelToolStripMenuItem.Name = "toActiveModelToolStripMenuItem";
-            this.toActiveModelToolStripMenuItem.Size = new System.Drawing.Size(160, 22);
+            this.toActiveModelToolStripMenuItem.Size = new System.Drawing.Size(159, 22);
             this.toActiveModelToolStripMenuItem.Text = "To Active Model";
             this.toActiveModelToolStripMenuItem.Click += new System.EventHandler(this.toActiveModelToolStripMenuItem_Click);
             // 
@@ -335,6 +336,7 @@
             // optionsToolStripMenuItem
             // 
             this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.teamColorToolStripMenuItem,
             this.reloadShadersToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             this.optionsToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
@@ -343,7 +345,7 @@
             // reloadShadersToolStripMenuItem
             // 
             this.reloadShadersToolStripMenuItem.Name = "reloadShadersToolStripMenuItem";
-            this.reloadShadersToolStripMenuItem.Size = new System.Drawing.Size(154, 22);
+            this.reloadShadersToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.reloadShadersToolStripMenuItem.Text = "Reload Shaders";
             this.reloadShadersToolStripMenuItem.Click += new System.EventHandler(this.reloadShadersToolStripMenuItem_Click);
             // 
@@ -353,6 +355,13 @@
             this.uVViewerToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
             this.uVViewerToolStripMenuItem.Text = "UV Viewer";
             this.uVViewerToolStripMenuItem.Click += new System.EventHandler(this.uVViewerToolStripMenuItem_Click);
+            // 
+            // teamColorToolStripMenuItem
+            // 
+            this.teamColorToolStripMenuItem.Name = "teamColorToolStripMenuItem";
+            this.teamColorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.teamColorToolStripMenuItem.Text = "Team Color";
+            this.teamColorToolStripMenuItem.Click += new System.EventHandler(this.teamColorToolStripMenuItem_Click);
             // 
             // Viewport
             // 
@@ -409,5 +418,6 @@
         private System.Windows.Forms.ToolStripMenuItem projectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem walkToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem createScreenshotToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem teamColorToolStripMenuItem;
     }
 }

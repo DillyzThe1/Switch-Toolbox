@@ -11,13 +11,13 @@ namespace Toolbox.Library.Forms
 {
     public class ColorAlphaBox : STPanel
     {
-        private Color color;
-        public Color Color
+        private System.Drawing.Color color;
+        public System.Drawing.Color Color
         {
             get { return color; }
             set
             {
-                color = value;
+                Color = value;
                 this.Invalidate();
             }
         }
@@ -30,7 +30,7 @@ namespace Toolbox.Library.Forms
             {
                 displayAlphaSolid = true;
                 this.BackgroundImage = null;
-                this.BackColor = Color.Black;
+                this.BackColor = System.Drawing.Color.Black;
                 this.Invalidate();
             }
         }
@@ -38,7 +38,7 @@ namespace Toolbox.Library.Forms
         public ColorAlphaBox()
         {
             this.BackgroundImage = Properties.Resources.CheckerBackground;
-            this.BackColor = Color.Transparent;
+            this.BackColor = System.Drawing.Color.Transparent;
 
             this.SetStyle(
             ControlStyles.AllPaintingInWmPaint |
@@ -52,11 +52,11 @@ namespace Toolbox.Library.Forms
             pe.Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
             pe.Graphics.PixelOffsetMode = PixelOffsetMode.Half;
 
-            Brush RGBColor = new SolidBrush(Color.FromArgb(255, Color.R, Color.G, Color.B));
-            Brush AlphaColor = new SolidBrush(Color.FromArgb(Color.A, Color.R, Color.G, Color.B));
+            Brush RGBColor = new SolidBrush(System.Drawing.Color.FromArgb(255, Color.R, Color.G, Color.B));
+            Brush AlphaColor = new SolidBrush(System.Drawing.Color.FromArgb(Color.A, Color.R, Color.G, Color.B));
 
             if (DisplayAlphaSolid)
-                AlphaColor = new SolidBrush(Color.FromArgb(255, Color.A, Color.A, Color.A));
+                AlphaColor = new SolidBrush(System.Drawing.Color.FromArgb(255, Color.A, Color.A, Color.A));
 
 
             Point rgbPos = new Point(ClientRectangle.X, ClientRectangle.Y);

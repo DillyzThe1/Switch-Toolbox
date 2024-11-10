@@ -19,15 +19,15 @@ namespace Toolbox.Library.Forms
     /// </summary>
     public class ColorSelector : STUserControl
     {
-        private Color _color;
+        private System.Drawing.Color _color;
 
         private HSVPixel _hsv = new HSVPixel(0, 100, 100);
 
-        public Color NewColor
+        public System.Drawing.Color NewColor
         {
             get
             {
-                return Color.FromArgb(Alpha, Color);
+                return System.Drawing.Color.FromArgb(Alpha, Color);
             }
         }
 
@@ -50,7 +50,7 @@ namespace Toolbox.Library.Forms
         /// <summary>
         /// The color the dialog gets and sets.
         /// </summary>
-        public Color Color
+        public System.Drawing.Color Color
         {
             get
             {
@@ -63,11 +63,11 @@ namespace Toolbox.Library.Forms
             }
         }
 
-        public Color AlphaColor
+        public System.Drawing.Color AlphaColor
         {
             get
             {
-                return Color.FromArgb(Alpha, Alpha, Alpha);
+                return System.Drawing.Color.FromArgb(Alpha, Alpha, Alpha);
             }
         }
 

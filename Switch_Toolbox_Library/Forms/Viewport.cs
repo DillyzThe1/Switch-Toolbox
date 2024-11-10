@@ -642,5 +642,11 @@ namespace Toolbox.Library
         private void createScreenshotToolStripMenuItem_Click(object sender, EventArgs e) {
             SaveScreenshot();
         }
+
+        private void teamColorToolStripMenuItem_Click(object sender, EventArgs e) {
+            Console.WriteLine("Bring out the selector!");
+            TeamColorSelector s = new TeamColorSelector();
+            s.Show();
+        }
     }
 }

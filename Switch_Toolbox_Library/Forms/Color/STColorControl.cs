@@ -1,15 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Toolbox.Library.Forms
-{
+namespace Toolbox.Library.Forms {
     public partial class STColorControl : STUserControl
     {
         private bool loaded = false;
@@ -23,11 +15,11 @@ namespace Toolbox.Library.Forms
             InitializeComponent();
             Text = "Color Dialog";
 
-            colorSelector1.Color = Color.White;
+            colorSelector1.Color = System.Drawing.Color.White;
             colorSelector1.Alpha = 255;
         }
 
-        public STColorControl(Color color) : base()
+        public STColorControl(System.Drawing.Color color) : base()
         {
             colorSelector1.Color = color;
             colorSelector1.DisplayAlpha = true;
@@ -47,20 +39,20 @@ namespace Toolbox.Library.Forms
             set { colorSelector1.Alpha = value; }
         }
 
-        public Color NewColor
+        public System.Drawing.Color NewColor
         {
             get
             {
-                return Color.FromArgb(Alpha, colorSelector1.Color);
+                return System.Drawing.Color.FromArgb(Alpha, colorSelector1.Color);
             }
             set
             {
                 colorSelector1.Alpha = value.A;
-                colorSelector1.Color = Color.FromArgb(255, value);
+                colorSelector1.Color = System.Drawing.Color.FromArgb(255, value);
             }
         }
 
-        public Color ColorRGB
+        public System.Drawing.Color ColorRGB
         {
             get
             {
@@ -108,7 +100,7 @@ namespace Toolbox.Library.Forms
         private void UD_ValueChanged(object sender, EventArgs e)
         {
             if (!loaded) return;
-            NewColor = Color.FromArgb((byte)alphaUD.Value, (byte)redUD.Value, (byte)greenUD.Value, (byte)blueUD.Value);
+            NewColor = System.Drawing.Color.FromArgb((byte)alphaUD.Value, (byte)redUD.Value, (byte)greenUD.Value, (byte)blueUD.Value);
         }
 
         private void stTextBox1_TextChanged(object sender, EventArgs e)
