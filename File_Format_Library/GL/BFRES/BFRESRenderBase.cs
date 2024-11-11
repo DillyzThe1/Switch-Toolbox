@@ -174,7 +174,8 @@ namespace FirstPlugin
             if (invertedCamera.Determinant != 0)
                 invertedCamera = mvpMat.Inverted();
 
-            Vector3 lightDirection = new Vector3(0f, 0f, -1f);
+            Vector3 lightDirection = new Vector3(10.0f, 0f, -1f);
+            Vector3 lightMulti = new Vector3(1.0f, 0.8f, 0.8f);
             Vector3 difLightDirection = Vector3.TransformNormal(lightDirection, invertedCamera).Normalized();
 
             GL.Enable(EnableCap.Texture2D);
@@ -195,7 +196,7 @@ namespace FirstPlugin
                         {
                             Vertex vert = shape.vertices[index];
                             float normal = Vector3.Dot(difLightDirection, vert.nrm) * 0.5f + 0.5f;
-                            GL.Color3(new Vector3(normal));
+                            GL.Color3(new Vector3(normal) * lightMulti);
                             GL.TexCoord2(vert.uv0);
                             GL.Vertex3(vert.pos);
                         }

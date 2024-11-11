@@ -17,6 +17,7 @@ using GL_EditorFramework.Interfaces;
 using FirstPlugin.Forms;
 using FirstPlugin.NodeWrappers;
 using OpenTK;
+using System.Drawing;
 
 namespace FirstPlugin
 {
@@ -858,13 +859,33 @@ namespace FirstPlugin
 
             DrawableContainer.Drawables.Add(BFRESRender);
 
+
             var Models = GetModels();
             if (Models != null)
             {
-                foreach (FMDL mdl in Models)
-                {
+                foreach (FMDL mdl in Models) {
+                    Console.WriteLine(mdl.Model.Name + " FMDL loaded.");
+                    TeamColorSelector.ModelExpectation curExp = null;
+                    foreach (TeamColorSelector.ModelExpectation exp in TeamColorSelector.modelExpectations) {
+                        if (mdl.Model.Name.StartsWith(exp.objName)) {
+                            Console.WriteLine(exp.charName + " (" + exp.objName + ") detected!");
+                            curExp = exp;
+                            TeamColorSelector.teamColor = exp.teamColor;
+                        }
+                    }
+
                     BFRESRender.models.Add(mdl);
                     DrawableContainer.Drawables.Add(mdl.Skeleton);
+                    //if (curExp.hiddenObjects.Contains(mdl.Name))
+                    //    mdl.Checked = false;
+
+                    foreach (STGenericObject stgo in mdl.Objects) {
+                        Console.WriteLine(" - " + stgo.Text + " shape loaded.");
+                        if (curExp != null && curExp.hiddenObjects.Contains(stgo.Text))
+                            stgo.Checked = false;
+                        stgo.Parent.Checked = stgo.Checked;
+                    }
+                    Console.WriteLine(" ");
                 }
             }
         }

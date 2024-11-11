@@ -77,6 +77,12 @@ namespace Toolbox.Library
 
             if (LoadDrawables)
                 LoadBaseDrawables();
+
+            foreach (TeamColorSelector.ModelExpectation exp in TeamColorSelector.modelExpectations)
+                if (exp.teamColor != null)
+                    teamColorToolStripMenuItem.DropDownItems.Add(exp.charName).Click += delegate(object sender, EventArgs ea) {
+                        TeamColorSelector.teamColor = exp.teamColor;
+                    };
         }
 
         //Reloads drawable containers without an active object being selected

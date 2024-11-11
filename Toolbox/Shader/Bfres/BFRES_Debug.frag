@@ -193,11 +193,6 @@ void main()
 	float roughness = 0.5;
 	vec3 specIntensity = vec3(1);
 	float ao = 1;
-    vec3 teamColor = vec3(0);
-
-    if (HasTeamColorMap == 1) {
-		 teamColor = texture(TeamColorMap, displayTexCoord).r * curTeamColor;
-    }
 
 	if (HasMRA == 1) //Kirby Star Allies PBR map
 	{
@@ -367,7 +362,11 @@ void main()
     {
 	    if (HasTeamColorMap == 1)
         {
-            fragColor = vec4(teamColor, 1);
+            fragColor = vec4(
+                texture(TeamColorMap, displayTexCoord).r * curTeamColor.r,
+                texture(TeamColorMap, displayTexCoord).g * curTeamColor.g,
+                texture(TeamColorMap, displayTexCoord).b * curTeamColor.b,
+            1);
         }
 		else
         {
